@@ -1,0 +1,129 @@
+#alertBox{
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    transition: 2000ms ease-in;
+}
+a{
+  text-decoration: none;
+  color: black;
+}
+.added{
+    background-color: rgb(71, 207, 110);
+    padding: 15px;
+    color: white;
+    border-radius: 10px;
+    z-index: 200;
+}
+.failed{
+    background-color: rgb(233, 60, 74);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 200;
+}
+.cross{
+    cursor:pointer;
+    font-weight:600;
+    margin-right:20px;
+    color: rgb(219, 206, 226);
+
+}
+.cross:hover{
+    color:rgb(38, 7, 59);
+}
+.not-visible{
+    display: none;
+}
+#comment-box{
+    margin-left: 20px;
+    background: rgb(25, 39, 52);
+    border-radius: 25px;
+    border: none;
+    outline: 0;
+    padding: 13px 20px;
+    width:80%;
+    filter:brightness(1.3);
+    color: white;
+    margin-top: 20px;
+  }
+  .cmnt-post{
+    background-color:#e0245e;
+    padding: 10px;
+    color: white;
+    border:none;
+    outline: 0 !important;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .cmnt-post:hover{
+    filter: brightness(1.3);
+  }
+  .comment{
+   background-color: rgb(223, 214, 219);
+      color: black;
+  
+  }
+.searchform{
+  position: relative;
+}
+  .resultdiv{
+    position: absolute;
+    background-color: rgb(233, 227, 227);
+    padding: 20px;
+    width: 100%;
+    border-radius: 5px;
+    max-height: 300px;
+    overflow-y: scroll;
+    z-index: 232;
+  }
+
+  .search-result{
+    background-color: rgb(255, 255, 255);
+    border-left: 7px solid rgb(195, 0, 255);
+    padding: 10px 20px;
+  }
+  .search-result:hover{
+    border-left: 7px solid rgb(216, 113, 147);
+    color: rgb(26, 26, 228);
+      }
+
+  
+.cardme {
+  width: 400px;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(223, 223, 226)
+}
+
+.stats {
+  background: #f2f5f8 !important;
+  color: #000 !important
+}
+
+.articles {
+  font-size: 10px;
+  color: #a1aab9
+}
+
+.number1 {
+  font-weight: 500
+}
+
+.followers {
+  font-size: 10px;
+  color: #a1aab9
+}
+
+.number2 {
+  font-weight: 500
+}
+
+.rating {
+  font-size: 10px;
+  color: #a1aab9
+}
+
+.number3 {
+  font-weight: 500
+}

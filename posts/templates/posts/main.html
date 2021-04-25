@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Lists
+{% endblock title %}
+
+    {% block scripts %}
+    <script src="{% static 'posts/main.js' %}" defer></script>
+    {% endblock scripts %}
+
+{% block content %}
+    <button id="addpost" class="m-auto btn btn-warning" data-bs-toggle="modal" data-bs-target="#addPostModal">Add Post</button>
+    {% comment %} modal {% endcomment %}
+
+    <div class="col-lg-6 m-auto searchform ">
+        <form id="searchform">
+        {% csrf_token %}
+         <input class="form-control" type="text" id="searchinput" placeholder="Search".../>
+        </form>
+          <div id="resultdiv" class="mt-1 resultdiv not-visible">
+    
+            </div>
+    </div>
+  
+
+ <!-- Modal -->
+    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create post</h5>
+                    <button type="button" class="btn-close add-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                     <form id="post-form" autocomplete="off">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger add-modal-close" data-bs-dismiss="modal">close</button>
+                            <button type="submit" id="add-btn" class="btn btn-success">+ add</button>
+                        </div>
+                    </form>
+                    {% comment %} <form action="upload/" id="my-dropzone" class="dropzone dz not-visible">
+                        {% csrf_token %}
+                        <div class="fallback">
+                            <input name="file" type="file" multiple />
+                        </div>
+                    </form> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% comment %} end modal {% endcomment %}
+    <div id="alertBox" >
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div id="posts-box" class="col-lg-8 col-md-10 col-sm-10"></div>
+    </div>
+ <div class=" spinner-border text-danger" id="loading">
+         <span class="sr-only text-center"></span>
+    </div>
+     <div class="text-center mb-3 mt-4" id="end-box">
+        <button class="btn btn-primary" id="load_btn">Load more</button>
+    </div>
+
+
+{% endblock content %}

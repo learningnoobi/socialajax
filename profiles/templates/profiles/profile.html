@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+userprofile
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-3 cardme">
+        <div class="d-flex align-items-center">
+            <div class="image">
+            
+             <img src="{{profile.avatar.url}}" class="rounded" width="155" /> </div>
+            <div class="ml-3 mx-2 w-100">
+                <h4 class="mb-0 mt-0">{{profile.user.username}}</h4>
+                 <span>{{profile.bio}}</span>
+                <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
+                    <div class="d-flex flex-column"> <span class="articles">Articles</span> <span class="number1">38</span> </div>
+                    <div class="d-flex flex-column"> <span class="followers">Followers</span> <span class="number2">980</span> </div>
+                    <div class="d-flex flex-column"> <span class="rating">Rating</span> <span class="number3">8.9</span> </div>
+                </div>
+                <div class="button mt-2 d-flex flex-row align-items-center">
+                {% if request.user == profile.user %}
+                 <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm btn-outline-primary mx-1 w-100">Edit Profile</button> 
+                 {% else %}
+                  <button class="btn btn-sm btn-outline-primary mx-1 w-100">Chat</button> 
+                 {% endif %}
+                 <button class="btn btn-sm btn-primary w-100 ml-2">Follow</button>
+                 
+                  </div>
+            </div>
+        </div>
+      
+</div>
+</div>
+       
+
+ <!-- Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Profile</h5>
+                    <button type="button" class="btn-close add-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                     <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger add-modal-close" data-bs-dismiss="modal">close</button>
+                            <button type="submit" id="add-btn" class="btn btn-success">Edit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Modal -->
+
+ <div class="posts">
+     {% for post in posts %}
+       <div class="card col-lg-6 m-auto mt-3">
+         <a href="{% url 'posts:post-detail' post.id %}">
+          <div class="card-body">
+              <p>{{post.title}} | {{post.author.user.username}}</p>
+              {{post.body}}
+          </div>
+          </a>
+        </div>
+      
+     {% endfor %}
+</div>
+ 
+{% endblock content %}

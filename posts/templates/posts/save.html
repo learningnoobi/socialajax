@@ -1,0 +1,24 @@
+   {% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block scripts %}
+    <script src="{% static 'posts/detail.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+posts
+{% endblock title %}
+
+{% block content %}
+    
+        {% for imp in imp_list %}
+       
+       <div class="card mt-2">
+            <div class="card-body">
+                <p><span class="float-right">{{imp.user}}</span></p>
+                <p> {{imp.body}}</p>
+            </div>
+        </div>
+       {% endfor %}
+{% endblock content %}
