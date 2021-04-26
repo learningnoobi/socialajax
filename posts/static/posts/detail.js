@@ -36,7 +36,7 @@ $.ajax({
         <div class="card mt-2">
         <div class="card-body">
             <p><span id="title">${el.title}</span>
-            <a href=""><span class="float-left"> | ${el.author}</span></a></p>
+            <a href="/${el.author}"><span class="float-left"> | ${el.author}</span></a></p>
             <p id="body"> ${el.body}</p>
         </div>
         <div class ="card-footer">

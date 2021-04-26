@@ -4,17 +4,19 @@
     right: 20px;
     transition: 2000ms ease-in;
 }
+
+.added{
+  background-color: rgb(71, 207, 110);
+  padding: 15px;
+  color: white;
+  border-radius: 10px;
+  z-index: 10;
+}
 a{
   text-decoration: none;
   color: black;
 }
-.added{
-    background-color: rgb(71, 207, 110);
-    padding: 15px;
-    color: white;
-    border-radius: 10px;
-    z-index: 200;
-}
+
 .failed{
     background-color: rgb(233, 60, 74);
     color: white;
@@ -92,6 +94,7 @@ a{
 .cardme {
   width: 400px;
   border: none;
+  z-index: 0;
   border-radius: 10px;
   background-color: rgb(223, 223, 226)
 }

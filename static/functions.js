@@ -13,10 +13,6 @@ function hideme(){
     alertBox.style.display ="none";
 }
 
-setTimeout(() => {
-    alertBox.style.display ="none";
-},10000)
-
 
 const getCookie = (name) => {
     let cookieValue = null;

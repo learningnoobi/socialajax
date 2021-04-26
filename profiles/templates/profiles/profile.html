@@ -6,7 +6,13 @@
 userprofile
 {% endblock title %}
 
+   {% block scripts %}
+    <script src="{% static 'profiles/main.js' %}" defer></script>
+    {% endblock scripts %}
+
 {% block content %}
+    <div id="alertBox" >
+    </div>
 <div class="container mt-5 d-flex justify-content-center">
     <div class="card p-3 cardme">
         <div class="d-flex align-items-center">
@@ -18,17 +24,46 @@ userprofile
                  <span>{{profile.bio}}</span>
                 <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
                     <div class="d-flex flex-column"> <span class="articles">Articles</span> <span class="number1">38</span> </div>
-                    <div class="d-flex flex-column"> <span class="followers">Followers</span> <span class="number2">980</span> </div>
-                    <div class="d-flex flex-column"> <span class="rating">Rating</span> <span class="number3">8.9</span> </div>
+                    <div class="d-flex flex-column">
+                      {% if request.user == profile.user %}
+                     <span 
+                    class="followers">Followers</span> <span id="followers" class="number2">{{profile.userfollow}}</span> </div>
+                    <div class="d-flex flex-column"> <span class="rating">Following</span> <span class="number3">{{profile.ifollow}}</span> </div>
+                    {% else %}
+                      <span 
+                    class="followers">Followers</span> <span id="followers"  class="number2">{{profile.userfollow}}</span> </div>
+                    <div class="d-flex flex-column"> <span class="rating">Following</span> <span id="following"  class="number3">{{profile.ifollow}}</span> </div>
+                    {% endif %}
                 </div>
                 <div class="button mt-2 d-flex flex-row align-items-center">
                 {% if request.user == profile.user %}
-                 <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm btn-outline-primary mx-1 w-100">Edit Profile</button> 
+                 <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm btn-outline-danger mx-1 w-100">Edit Profile</button> 
                  {% else %}
-                  <button class="btn btn-sm btn-outline-primary mx-1 w-100">Chat</button> 
+               
+                  <button class="btn btn-sm btn-outline-danger mx-1 w-100">Chat</button> 
+                
                  {% endif %}
-                 <button class="btn btn-sm btn-primary w-100 ml-2">Follow</button>
-                 
+
+                {% if request.user == profile.user %}
+             <button type="submit" class="btn btn-sm btn-outline-primary w-100 ml-2">Followers</button>
+                {% else %}
+                 {% if follow %}
+                <form id="toggle_follow" action="{% url 'profiles:follow_unfollow' profile.user.username%}"  method="POST">
+                    {% csrf_token %}
+                     <input type="hidden" name="profile_pk" value="{{profile.user.username}}">
+                      <button id="toggle_btn" type="submit" class="btn btn-sm btn-primary w-100 ml-2">Unfollow</button>
+                </form>
+                 {% else %}
+                 <form action="{% url 'profiles:follow_unfollow' profile.user.username%}" id="toggle_follow"  method="POST">
+                    {% csrf_token %}
+                     <input type="hidden" name="profile_pk" value="{{profile.user.username}}">
+                      <button id="toggle_btn" type="submit" class="btn btn-sm btn-primary w-100 ml-2">Follow</button>
+                </form>
+                 {% endif %}
+    
+        {% endif %}
+
+
                   </div>
             </div>
         </div>

@@ -29,3 +29,4 @@ urlpatterns = [
     path('<id>/save/', important_post, name='save'),
     path('<pk>/pk/', post_detail_data_view, name='post-detail-data'),
 ]
+

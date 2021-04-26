@@ -6,14 +6,17 @@ from .forms import ProfileForm
 from django.http import HttpResponseRedirect,JsonResponse
 
 def profile(request,username):
-    
-    
-    profile = Profile.objects.get(user__username__iexact = username)
+    profile = Profile.objects.get(user__username = username)
     posts = profile.post_set.all()
+    profile_pk = request.POST.get('profile_pk')
     try:
         instance = Profile.objects.get(user=request.user) 
     except:
         pass
+    follow = False
+    if profile.user in instance.following.all():
+        follow = True
+    
     form = ProfileForm(instance=instance)
     if request.method =='POST':
         user = request.user
@@ -23,5 +26,21 @@ def profile(request,username):
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect("/"+request.user.username)
-    context = {"profile":profile,"posts":posts,"form":form}
+    context = {"profile_pk":profile_pk,"profile":profile,"posts":posts,"form":form,"follow":follow,"instance":instance}
     return render(request,'profiles/profile.html',context)
+
+def follow_unfollow(request,username):
+
+    if request.method == "POST":
+        # profile_pk = request.POST.get('profile_pk')
+        myprofile = Profile.objects.get(user=request.user)
+        obj = Profile.objects.get(user__username = username)
+        print(obj)
+        if obj.user in myprofile.following.all():
+            myprofile.following.remove(obj.user)
+            return JsonResponse({'follow':False,'followers':obj.userfollow})
+        else:
+            myprofile.following.add(obj.user)
+            return JsonResponse({'follow':True,'followers':obj.userfollow})
+    return redirect(request.META.get('HTTP_REFERER'))
+

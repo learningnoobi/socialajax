@@ -100,7 +100,8 @@ postForm.addEventListener('submit',e=>{
             <div class="card mt-2">
             <div class="card-body">
                 <p>${res.title} | <a href="${url}${res.author}"><span class="float-right">${res.author}</span></a></p>
-                <p> ${res.body}</p>
+                <p> ${res.body}</p>def __str__(self):
+                return str(self)
             </div>
             <div class ="card-footer">
                 <div class="d-flex">
@@ -167,18 +168,6 @@ const sendSearchData = (search) => {
                     }
                 }
 
-                // resultdiv.innerHTML += `
-              
-                // <div class="card mt-2">
-                // <div class="card-body">
-                //     <p>${el.title} </p>
-                //     <p> ${el.body}</p>
-                // </div>
-                // </div>
-
-
-                // `
-       
         },
         error:function(err){
             console.log(err)
