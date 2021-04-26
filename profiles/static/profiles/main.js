@@ -11,7 +11,7 @@ console.log(togglefollow)
 
  
 
-    $(document).on('submit','#toggle_follow',function(e){
+    $(document).on('click','#toggle_btn',function(e){
     e.preventDefault()
     
     console.log('submited')

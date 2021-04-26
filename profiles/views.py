@@ -9,24 +9,33 @@ def profile(request,username):
     profile = Profile.objects.get(user__username = username)
     posts = profile.post_set.all()
     profile_pk = request.POST.get('profile_pk')
-    try:
-        instance = Profile.objects.get(user=request.user) 
-    except:
-        pass
+    
+    instance = Profile.objects.get(user=request.user) 
+    following = profile.following.all()
+    
     follow = False
     if profile.user in instance.following.all():
         follow = True
     
     form = ProfileForm(instance=instance)
     if request.method =='POST':
+        
         user = request.user
         instance = get_object_or_404(Profile, user=user)
         if request.method == "POST":
             form = ProfileForm(request.POST, request.FILES,instance=instance)
             if form.is_valid():
                 form.save()
-                return HttpResponseRedirect("/"+request.user.username)
-    context = {"profile_pk":profile_pk,"profile":profile,"posts":posts,"form":form,"follow":follow,"instance":instance}
+                return redirect(request.META.get('HTTP_REFERER'))
+    context = {
+        "profile_pk":profile_pk,
+        "profile":profile,
+        "posts":posts,
+        "form":form,
+        "follow":follow,
+        "instance":instance,
+        "following":following
+        }
     return render(request,'profiles/profile.html',context)
 
 def follow_unfollow(request,username):

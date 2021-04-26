@@ -4,7 +4,7 @@ from django.urls import reverse
 
 class Profile(models.Model):
     first_name = models.CharField(max_length=200, blank = True)
-    following = models.ManyToManyField(User,related_name="following" ,blank=True)
+    following = models.ManyToManyField(User,related_name="followed" ,blank=True)
     last_name = models.CharField(max_length=200, blank = True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True ,default="Busy Thinking of awesome bio !")
@@ -21,4 +21,8 @@ class Profile(models.Model):
 
     @property
     def userfollow(self):
-        return self.user.following.all().count()
+        return self.user.followed.all().count()
+
+    @property
+    def totalpost(self):
+        return self.post_set.all().count()

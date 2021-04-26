@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-userprofile
+{{profile.user}}
 {% endblock title %}
 
    {% block scripts %}
@@ -23,18 +23,19 @@ userprofile
                 <h4 class="mb-0 mt-0">{{profile.user.username}}</h4>
                  <span>{{profile.bio}}</span>
                 <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
-                    <div class="d-flex flex-column"> <span class="articles">Articles</span> <span class="number1">38</span> </div>
+                    <div class="d-flex flex-column"> <span class="articles">Posts</span> <span class="number1">{{profile.totalpost}}</span> </div>
                     <div class="d-flex flex-column">
                       {% if request.user == profile.user %}
                      <span 
                     class="followers">Followers</span> <span id="followers" class="number2">{{profile.userfollow}}</span> </div>
-                    <div class="d-flex flex-column"> <span class="rating">Following</span> <span class="number3">{{profile.ifollow}}</span> </div>
+                    <div  data-bs-toggle="modal" data-bs-target="#followingModal" class="d-flex flex-column"> <span class="rating"  >Following</span> <span class="number3">{{profile.ifollow}}</span> </div>
                     {% else %}
                       <span 
                     class="followers">Followers</span> <span id="followers"  class="number2">{{profile.userfollow}}</span> </div>
-                    <div class="d-flex flex-column"> <span class="rating">Following</span> <span id="following"  class="number3">{{profile.ifollow}}</span> </div>
+                    <div  data-bs-toggle="modal" data-bs-target="#followingModal"  class="d-flex flex-column"> <span class="rating">Following</span> <span id="following"  class="number3">{{profile.ifollow}}</span> </div>
                     {% endif %}
                 </div>
+
                 <div class="button mt-2 d-flex flex-row align-items-center">
                 {% if request.user == profile.user %}
                  <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm btn-outline-danger mx-1 w-100">Edit Profile</button> 
@@ -44,6 +45,8 @@ userprofile
                 
                  {% endif %}
 
+
+                {% comment %} follow system {% endcomment %}
                 {% if request.user == profile.user %}
              <button type="submit" class="btn btn-sm btn-outline-primary w-100 ml-2">Followers</button>
                 {% else %}
@@ -61,7 +64,7 @@ userprofile
                 </form>
                  {% endif %}
     
-        {% endif %}
+             {% endif %}
 
 
                   </div>
@@ -71,6 +74,36 @@ userprofile
 </div>
 </div>
        
+
+ <!-- Modal -->
+    <div class="modal fade" id="followingModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Following</h5>
+                    <button type="button" class="btn-close add-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background:lightgray;"> 
+                {% for foll in following %}
+                     <div class="search-result mt-1">
+                       <div class="d-flex justify-content-between">
+                       <a href="/{{foll.profile.user.username}}"><span class="d-flex">
+                         <img src="{{foll.profile.avatar.url}}" class="rounded" width="55" /> 
+                        <h6 class="text-uppercase mx-2 mt-3"> {{foll}}</h6>
+                         </span></a>
+                          <button id="toggle_btn" type="submit" class="flex-end btn btn-sm btn-primary ml-2">Unfollow</button>
+                       </div>
+                   
+                    </div>    
+                        {% empty %}
+                       Not Following Any Users !           
+                {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Modal -->
 
  <!-- Modal -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -94,10 +127,9 @@ userprofile
         </div>
     </div>
  <!-- Modal -->
-
  <div class="posts">
      {% for post in posts %}
-       <div class="card col-lg-6 m-auto mt-3">
+       <div class="card col-lg-6 col-md-10 col-sm-11 m-auto mt-3">
          <a href="{% url 'posts:post-detail' post.id %}">
           <div class="card-body">
               <p>{{post.title}} | {{post.author.user.username}}</p>
