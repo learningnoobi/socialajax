@@ -22,6 +22,7 @@ def post_list_and_create(request):
                 'body':instance.body,
                 'author':instance.author.user.username,
                 'id':instance.id,
+                'avatar':instance.author.avatar.url,
             })
     context = {"qs":qs,"form":form}
     return render (request, 'posts/main.html',context)
@@ -43,6 +44,7 @@ def list_json(request,num_posts):
         "body":obj.body,
         'important':True if obj.important.filter(id=request.user.pk).exists() else False,
         "count":obj.like_count,
+        "avatar":obj.author.avatar.url,
         }
         data.append(posts)
 
@@ -61,10 +63,17 @@ def like_unlike_post(request):
         return JsonResponse({'liked': liked, 'count': obj.like_count})
     return redirect('posts:main-board')
 
-def delete_all(request):
-    lists = Post.objects.all()
-    lists.delete()
-    return redirect('/')
+
+def important_post(request):
+    if request.is_ajax():
+        pk = request.POST.get('pk')
+        post = get_object_or_404(Post,pk=pk)
+        if post.important.filter(id=request.user.id).exists():
+            post.important.remove(request.user)
+        else:
+            post.important.add(request.user)
+        return JsonResponse({'important':True if post.important.filter(id=request.user.pk).exists() else False})
+    return redirect('posts:main-board')
 
 def post_detail(request, pk):
     obj = get_object_or_404(Post,id=pk)
@@ -87,6 +96,7 @@ def post_detail(request, pk):
                 'body':instance.body,
                 'user':instance.user.username,
                 'id':instance.id,
+                'avatar':instance.user.profile.avatar.url,
             })
     context = {
         'obj': obj,
@@ -122,17 +132,21 @@ def post_detail_data_view(request, pk):
 
 def update_post(request, pk): 
     obj = Post.objects.get(pk=pk)
-    if request.is_ajax():
-        new_title = request.POST.get('title')
-        new_body = request.POST.get('body')
-        obj.title = new_title
-        obj.body = new_body
-        obj.save()
-        return JsonResponse({
-            'title': new_title,
-            'body': new_body,
-        })
-    return redirect('posts:main-board')
+    if request.user == obj.author.user:
+        if request.is_ajax():
+            new_title = request.POST.get('title')
+            new_body = request.POST.get('body')
+            obj.title = new_title
+            obj.body = new_body
+            obj.save()
+            return JsonResponse({
+                'title': new_title,
+                'body': new_body,
+            })
+        else:
+            return redirect('posts:main-board')
+    else:
+        return redirect('posts:main-board')
 
 def delete_post(request, pk):
     obj = Post.objects.get(pk=pk)
@@ -141,14 +155,8 @@ def delete_post(request, pk):
         return JsonResponse({'msg':'some message'})
     return redirect('posts:main-board')
 
-def important_post(request,id):
-    post = get_object_or_404(Post,id=id)
-    if post.important.filter(id=request.user.id).exists():
-        post.important.remove(request.user)
-    else:
-        post.important.add(request.user)
-    return JsonResponse({'important':True if post.important.filter(id=request.user.pk).exists() else False})
 
+@login_required(login_url='profiles:login')
 def save_list(request):
 	user = request.user
 	imp_list = user.important.all()
@@ -168,7 +176,9 @@ def search(request):
                 item ={
                     'id':pos.id,
                     'title':pos.title,
-                    'body':pos.body
+                    'body':pos.body,
+                    'author':pos.author.user.username,
+                    'avatar':pos.author.avatar.url,
 
                 }
                 data.append(item)

@@ -2,11 +2,18 @@ from django.shortcuts import render,get_object_or_404,redirect
 from .models import Profile
 from django.contrib.auth.models import User
 from posts.models import Post
-from .forms import ProfileForm
+from .forms import ProfileForm,CreateUserForm
 from django.http import HttpResponseRedirect,JsonResponse
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+from django.contrib.auth import login, authenticate,logout
+import json
 
+
+@login_required(login_url='profiles:login')
 def profile(request,username):
-    profile = Profile.objects.get(user__username = username)
+    profile = get_object_or_404(Profile,user__username = username)
     posts = profile.post_set.all()
     profile_pk = request.POST.get('profile_pk')
     
@@ -53,3 +60,57 @@ def follow_unfollow(request,username):
             return JsonResponse({'follow':True,'followers':obj.userfollow})
     return redirect(request.META.get('HTTP_REFERER'))
 
+def registerview(request):
+	if request.user.is_authenticated:
+		return redirect('posts:main-board')
+	else:
+		form = CreateUserForm()
+		if request.method == 'POST':
+			form = CreateUserForm(request.POST)
+			if form.is_valid():
+				form.save()
+				user = form.cleaned_data.get('username')
+				messages.success(request, 'Account was created for ' + user)
+
+
+				return redirect('profiles:login')
+			
+
+		context = {'form':form}
+		return render(request, 'profiles/register.html', context)
+
+def validate_username(request):
+    if request.method=="POST":
+        data = json.loads(request.body)
+        username = data['username']
+        if not str(username).isalnum():
+            return JsonResponse({'username_error': 'Only alphanumeric characters'}, status=400)
+        if User.objects.filter(username=username).exists():
+            return JsonResponse({'username_error': 'Sorry username in taken !'}, status=409)
+        return JsonResponse({'username_valid': True})
+
+
+
+def loginview(request):
+
+	if request.user.is_authenticated:
+		return redirect('posts:main-board')
+
+	if request.method =='POST':
+		username =request.POST.get('username')
+		password = request.POST.get('password')
+
+		user = authenticate(request,username=username,password=password)
+		if user is not None:
+			login(request,user)
+			return redirect("posts:main-board")
+		else:
+			messages.warning(request,'Username or password is incorrect')
+
+	context = {}
+	return render(request,'profiles/login.html',context)
+
+
+def logoutUser(request):
+	logout(request)
+	return redirect('profiles:login')

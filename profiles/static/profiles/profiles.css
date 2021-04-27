@@ -1,0 +1,40 @@
+.user_card {
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #150a1c;
+    position: relative;
+    border:2px dotted rgb(155, 81, 215);
+    justify-content: center;
+    padding: 20px 30px;
+    max-width:70%;
+}
+
+
+#form-title{
+    color: #fff;
+}
+i{
+    position: absolute;
+    top: 50%;
+    right:6%;
+    z-index: 2;
+}
+.is-invalid{
+    outline: 1px solid rgb(206, 22, 65);
+}
+.is-valid{
+    outline: 1px solid rgb(12, 160, 59);
+}
+.reg-box{
+    max-width: 100%;
+    position: relative;
+  
+}
+.feed{
+    position: absolute;
+    max-width:100%;
+    margin-top: -10px;
+}
+.keys{
+    cursor: pointer;
+}

@@ -1,7 +1,7 @@
 const url = window.location.href + "pk/"
 const updateUrl = window.location.href + "update/"
 const deleteUrl = window.location.href + "delete/"
-
+const surl = window.location.origin
 const loading = document.getElementById("loading")
 const updateBtn = document.getElementById('update-btn')
 const saveBtn = document.getElementById('save-btn')
@@ -33,26 +33,47 @@ $.ajax({
             deleteBtn.classList.remove('not-visible')
         }
         detail_div.innerHTML = `
-        <div class="card mt-2">
-        <div class="card-body">
-            <p><span id="title">${el.title}</span>
-            <a href="/${el.author}"><span class="float-left"> | ${el.author}</span></a></p>
-            <p id="body"> ${el.body}</p>
-        </div>
-        <div class ="card-footer">
-            <div class="d-flex">
-           
-                <form class="like-unlike-forms" data-form-id="${el.id}">
-                <button class="btn btn-danger mx-2" id="like-unlike-${el.id}">${el.liked ? `${el.count} Unlike `: ` ${el.count} Like`}</button>
-            </form>
-            </div>
-        </div>
-    </div>
+
+
+
+    <div class="col-lg-6 col-md-10 col-sm-11 m-auto card mt-2">
+    <div class="card-body d-flex ">
+      <span>
+      <a class="author" href="/${el.author}">
+      <img src="${el.avatar}" class="rounded-circle" width="45" /> 
+      </a>
+       </span>
+     <div class="mx-3">
+      <a class="author" href="/${el.author}">${el.author}</a> </br>
+        <span id="title"> ${el.title}</span> 
+         <p id="body"> ${el.body}</p>
+     </div>
+ </div>
+ <div class ="card-footer">
+     <div class="d-flex">
+         <form class="like-unlike-forms" data-form-id="${el.id}">
+         <button class="loadmore" mx-2" id="like-unlike-${el.id}">${el.liked ? `${el.count} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+       </svg>  `: ` ${el.count} Like`}</button>
+     </form>
+     <form class="save-forms" data-save-id="${el.id}">
+     <button id="save-${el.id}"  class="savepost mx-2">${el.important ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+     <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
+   </svg> Saved `: `Save Post`}</button> 
+    </form>
+     </div>
+ </div>
+</div>
+
+
+
+
         `
         titleInput.value = el.title
         bodyInput.value = el.body
         loading.style.display = "none";
         likeUnlikePosts()
+        saveUnsaveForms()
     },
 
     error:function(error){
@@ -117,39 +138,9 @@ deleteForm.addEventListener('submit',function(e){
     })
 
 })
-$(document).ready(function(){
-const durl = window.location.href + "save/"
-$(document).on('click','#save-btn',function(e){
+// save
 
-    e.preventDefault()
-    console.log(durl)
-    $.ajax({
-        type:'post',
-        url: durl,
-        data:{
-            'csrfmiddlewaretoken':csrf[0].value,
 
-        },
-        success:function(res){
-         console.log(res)
-            saveBtn.textContent = `${res.important? "Saved":"Save Post"}`
-
-     if(res.important){
-        handlealerts('added','Successfully Added to Save !')
-     }
-     else{
-        handlealerts('failed','Successfully removed!')
-     }
-         
-        },
-        error:function(err){
-            console.log(err)
-            handlealerts('failed','Something seems to be wrong!')
-        }
-    })
-})
-
-});
 
 // adding post with ajax
 commentForm.addEventListener('submit',e=>{
@@ -163,14 +154,26 @@ commentForm.addEventListener('submit',e=>{
             'body':commentBox.value,
         },
         success:function(res){
-            console.log(res.body)
+            console.log(res)
             commentDiv.insertAdjacentHTML('afterbegin',`
-            <div class="animate__animated animate__bounce animate__delay-0s card mt-2 comment">
-            <div class="card-body">
-            <a href="/${res.user}">${res.user}</a>
-                <p> ${res.body}</p>
-            </div>
-        </div>
+        
+        
+         <div class="animate__animated animate__bounce animate__delay-0s search-result mt-2">
+          <div class="card-body d-flex ">
+              <span>
+              <a class="author" href="/${res.user}">
+              <img src="${res.avatar}" class="rounded-circle" width="45" /> 
+              </a>
+               </span>
+             <div class="mx-3">
+              <a class="author" href="/${res.user}">${res.user}</a> </br>
+            
+                 <p>  ${res.body}</p>
+         </div>
+     </div>
+   
+ </div>
+
         `)
         
         commentForm.reset()
