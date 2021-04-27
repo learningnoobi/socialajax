@@ -45,12 +45,12 @@ def profile(request,username):
         }
     return render(request,'profiles/profile.html',context)
 
-def follow_unfollow(request,username):
+def follow_unfollow(request):
 
     if request.method == "POST":
-        # profile_pk = request.POST.get('profile_pk')
+        profile_pk = request.POST.get('profile_pk')
         myprofile = Profile.objects.get(user=request.user)
-        obj = Profile.objects.get(user__username = username)
+        obj = Profile.objects.get(user__username = profile_pk)
         print(obj)
         if obj.user in myprofile.following.all():
             myprofile.following.remove(obj.user)
@@ -89,8 +89,6 @@ def validate_username(request):
             return JsonResponse({'username_error': 'Sorry username in taken !'}, status=409)
         return JsonResponse({'username_valid': True})
 
-
-
 def loginview(request):
 
 	if request.user.is_authenticated:
@@ -103,7 +101,7 @@ def loginview(request):
 		user = authenticate(request,username=username,password=password)
 		if user is not None:
 			login(request,user)
-			return redirect("posts:main-board")
+			return redirect('posts:main-board')
 		else:
 			messages.warning(request,'Username or password is incorrect')
 

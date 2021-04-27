@@ -23,6 +23,8 @@ def post_list_and_create(request):
                 'author':instance.author.user.username,
                 'id':instance.id,
                 'avatar':instance.author.avatar.url,
+                'bio':instance.author.bio,
+                
             })
     context = {"qs":qs,"form":form}
     return render (request, 'posts/main.html',context)
@@ -45,6 +47,10 @@ def list_json(request,num_posts):
         'important':True if obj.important.filter(id=request.user.pk).exists() else False,
         "count":obj.like_count,
         "avatar":obj.author.avatar.url,
+        "bio":obj.author.bio,
+        "followers":obj.author.userfollow,
+        "following":obj.author.ifollow,
+        "follow":False if obj.author in request.user.followed.all() else True,
         }
         data.append(posts)
 

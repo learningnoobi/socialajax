@@ -25,7 +25,15 @@ Log In
 				</div>
 				<div class="d-flex justify-content-center form_container">
                     
-					<form method="POST" action="{% url 'profiles:login' %}">
+					<form method="POST" >
+						{% if messages %}
+						{% for message in messages %}
+						<div class="savepost">
+							{{message}}
+						</div>
+						{% endfor %}
+						
+						{% endif %}
 						{% csrf_token %}
 						<div class="input-group mb-3">
 								<i class="fa fa-user"></i>							
@@ -41,14 +49,7 @@ Log In
 				   		</div>
 					</form>
 				</div>
-                {% if form.errors %}
-                {% for error in form.errors%}
-                <div class="mt-4">
-                    <div class="alert alert-danger">
-                    {{form.errors}}</div>
-                </div>
-                {% endfor %}
-                {% endif %}
+                
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links " style="color: white;">
 						Don't have account?  <a href="{% url 'profiles:register' %}" class="author ml-2 mx-2"> Register</a>

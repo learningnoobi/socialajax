@@ -23,9 +23,19 @@ Join Us - Register
 					<h3 id="form-title">Join Us</h3>
 				</div>
 				<div class="d-flex justify-content-center form_container">
-                    
+               
 					<form method="POST" action="">
 						{% csrf_token %}
+						   			{% if form.errors %}
+									<div class="loadmore">
+										{% for field in form %}
+									 {% for error  in field.errors %}
+                  						  <!-- Output error text message only -->
+									<div>{{error}}</div>
+								{% endfor %}
+									{% endfor %}
+								</div>
+							{% endif %}
 						<div class="input-group mb-3">
 								<i class="fa fa-user"></i>							
 								{{ form.username }}
@@ -53,14 +63,7 @@ Join Us - Register
 				   		</div>
 					</form>
 				</div>
-                {% if form.errors %}
-                {% for error in form.errors%}
-                <div class="mt-4">
-                    <div class="alert alert-danger">
-                    {{form.errors}}</div>
-                </div>
-                {% endfor %}
-                {% endif %}
+                
 				<div class="mt-4">
 					<div class="d-flex justify-content-center links " style="color: white;">
 						Already have an account? <a href="{% url 'profiles:login' %}" class="author ml-2">Login</a>

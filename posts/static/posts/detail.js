@@ -105,7 +105,7 @@ updateForm.addEventListener('submit',function(e){
             $('#updateModal').modal('hide')
             title.textContent = res.title
             body.textContent = res.body
-            handlealerts('added','Successfully Edited !')
+            handlealerts('added',`Successfully delted !`)
         },
         error:function(err){
             console.log(err)

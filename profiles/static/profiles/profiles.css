@@ -6,7 +6,7 @@
     border:2px dotted rgb(155, 81, 215);
     justify-content: center;
     padding: 20px 30px;
-    max-width:70%;
+    max-width:80%;
 }
 
 
@@ -38,3 +38,4 @@ i{
 .keys{
     cursor: pointer;
 }
+
