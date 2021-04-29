@@ -5,7 +5,7 @@ from .forms import PostForm,CommentForm
 from profiles.models import Profile
 from django.contrib.auth.decorators import login_required
 
-
+@login_required(login_url='profiles:login')
 def post_list_and_create(request):
     qs = Post.objects.all()
     form = PostForm(request.POST or None)
@@ -50,7 +50,8 @@ def list_json(request,num_posts):
         "bio":obj.author.bio,
         "followers":obj.author.userfollow,
         "following":obj.author.ifollow,
-        "follow":False if obj.author in request.user.followed.all() else True,
+        "follow":True if request.user.profile in obj.author.followers else False,
+        "same_user_author":True if obj.author == request.user.profile else False
         }
         data.append(posts)
 
@@ -69,6 +70,18 @@ def like_unlike_post(request):
         return JsonResponse({'liked': liked, 'count': obj.like_count})
     return redirect('posts:main-board')
 
+def like_unlike_comment(request):
+    if request.is_ajax():
+        pk = request.POST.get('pk')
+        obj = get_object_or_404(Comment,pk=pk)
+        if request.user in obj.liked.all():
+            liked = False
+            obj.liked.remove(request.user)
+        else:
+            liked = True
+            obj.liked.add(request.user)
+        return JsonResponse({'liked': liked, 'count': obj.like_comment})
+    return redirect('posts:main-board')
 
 def important_post(request):
     if request.is_ajax():
@@ -81,15 +94,15 @@ def important_post(request):
         return JsonResponse({'important':True if post.important.filter(id=request.user.pk).exists() else False})
     return redirect('posts:main-board')
 
+@login_required(login_url='profiles:login')
 def post_detail(request, pk):
     obj = get_object_or_404(Post,id=pk)
     comments = Comment.objects.filter(post=obj).order_by("-created")
     comment_count = Comment.objects.filter(post=obj).count()
     form = PostForm()
     commentform = CommentForm()
-    is_important= False
-    if obj.important.filter(id=request.user.pk).exists():
-        is_important= True
+
+
     if request.method=="POST":
         commentform = CommentForm(request.POST or None)
         if commentform.is_valid():
@@ -108,17 +121,13 @@ def post_detail(request, pk):
         'obj': obj,
         'form': form,
         'commentform':commentform,
-         
-         'comment_count': comment_count,
-        "is_important":is_important,
+        'comment_count': comment_count,
         'comments': comments,
     }
 
     return render(request, 'posts/detail.html', context)
 
 def post_detail_data_view(request, pk):
-
-
     if request.is_ajax():
         obj = Post.objects.get(pk=pk)
         data = {
@@ -126,16 +135,32 @@ def post_detail_data_view(request, pk):
             'title': obj.title,
             'body': obj.body,
             "liked":True if request.user in obj.liked.all() else False,
-            
             'author': obj.author.user.username,
             'avatar': obj.author.avatar.url,
             'logged_in': request.user.username,
              "count":obj.like_count,
              'important':True if obj.important.filter(id=request.user.pk).exists() else False
         }
-        return JsonResponse({'data': data},)
+        comments = Comment.objects.filter(post=obj).order_by("-created")
+        print(comments)
+        post_comments = []
+        for obj in comments:
+            posts = {
+                'body':obj.body,
+                'user':obj.user.username,
+                'id':obj.id,
+                'avatar':obj.user.profile.avatar.url,
+                'like_comment':obj.like_comment,
+                'comment_liked':True if request.user in obj.liked.all() else False
+            }
+            post_comments.append(posts)
+        return JsonResponse({'data': data,'post_comments':post_comments})
     return redirect('posts:main-board')
 
+
+
+
+@login_required(login_url='profiles:login')
 def update_post(request, pk): 
     obj = Post.objects.get(pk=pk)
     if request.user == obj.author.user:
@@ -153,7 +178,7 @@ def update_post(request, pk):
             return redirect('posts:main-board')
     else:
         return redirect('posts:main-board')
-
+@login_required(login_url='profiles:login')
 def delete_post(request, pk):
     obj = Post.objects.get(pk=pk)
     if request.is_ajax():

@@ -3,6 +3,7 @@ const loading = document.getElementById("loading");
 const load_btn = document.getElementById("load_btn");
 const endbox = document.getElementById("end-box");
 let visible = 3;
+const togglebtn = document.getElementById("toggle_btn");
 
 // const saveBtn = document.getElementById('save-btn')
 
@@ -18,14 +19,17 @@ const getData = () => {
       data.forEach((el) => {
         hello.innerHTML += `
      
-
+     
+       <input type="hidden" id="profile_pk" name="profile_pk" value="${
+         el.author
+       }" />
             <div class="card mt-2">
                <div class="card-body d-flex ">
                  <span>
                  <span class="hoverme">
                         <img src="${
                           el.avatar
-                        }" class="rounded-circle" width="45" /> 
+                        }" class="rounded-circle infoimg" /> 
 
 
                             <div class="content">
@@ -35,10 +39,13 @@ const getData = () => {
                                 }" class="rounded infoimg"/> 
                                     <span class="mx-2">
                                     <span class="author">${el.author}</span>
+                                   
                                     <p class="bio">${el.bio}</p> 
                                    <div class="d-flex">
                                         <span class="followers">Followers
-                                        <p class="ml-2">${el.followers}</p>
+                                        <p id="followers-${
+                                          el.author
+                                        }"  class="ml-2">${el.followers}</p>
                                         </span>
                                         <span class="followers mx-2">Following
                                         <p class="ml-2">${el.following}</p>
@@ -46,11 +53,28 @@ const getData = () => {
                                    </div>
                                 </div>
                                 <span class="d-flex mt-2">
+
+                                <form class="follow-unfollow-forms" data-follow-id="${
+                                  el.author
+                                }">
                                 ${
-                                  el.follow
-                                    ? `<button class="loadmoresm">Unfollow</button>`
-                                    : `<button class="loadmoresm">Follow</button>`
+                                  el.same_user_author
+                                    ? `<button type="submit" class="loadmoresm">You Man</button>`
+                                    : `${
+                                        el.follow
+                                          ? `
+                                         
+                                          <button id="toggle_btn-${el.author}"   type="submit" class="loadmoresm btn-${el.author}">Unfollow</button>`
+                                          : `
+                                         
+                                          <button id="toggle_btn-${el.author}"  type="submit" class="loadmoresm btn-${el.author}">Follow</button>`
+                                      }`
                                 }
+                                </form>
+
+
+                                
+                              
                                 <a class="author" href="${url}${el.author}">
                                 <button class="savepostsm mx-2">Profile</button>
                                 </a>
@@ -71,6 +95,7 @@ const getData = () => {
             <div class ="card-footer">
                 <div class="d-flex">
                     <a href="${url}${el.id}" class="cmnt-post">Detail</a>
+                    
                     <form class="like-unlike-forms" data-form-id="${el.id}">
                            <button  id="like-unlike-${
                              el.id
@@ -82,7 +107,10 @@ const getData = () => {
                           </svg> `
                                 : ` ${el.count} Like`
                             }</button>
+
+                            
                       </form>
+
                      <form class="save-forms" data-save-id="${el.id}">
                           <button id="save-${el.id}"  class="savepost mx-2">${
           el.important
@@ -105,6 +133,7 @@ const getData = () => {
 
         loading.style.display = "none";
         saveUnsaveForms();
+        togglefollow();
       });
       console.log(res.size);
       if (res.size === 0) {
@@ -243,7 +272,7 @@ const sendSearchData = (search) => {
                         <div class="card-body d-flex ">
                             <span>
                             <a class="author" href="/${el.author}">
-                            <img src="${el.avatar}" class="rounded-circle" width="45" /> 
+                            <img src="${el.avatar}" class="rounded-circle infoimg" /> 
                             </a>
                              </span>
                              <a href="/${el.id}">
@@ -283,9 +312,11 @@ searchinput.addEventListener("keyup", function (e) {
   sendSearchData(e.target.value);
 });
 
+// disapper search result when clicked outside
 const objRef = document.body;
 
 objRef.addEventListener("click", () => {
   resultdiv.classList.add("not-visible");
   searchinput.value = "";
 });
+// disapper search result when clicked outside

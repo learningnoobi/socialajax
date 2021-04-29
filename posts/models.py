@@ -18,9 +18,6 @@ class Post(models.Model):
     def like_count(self):
         return self.liked.all().count()
 
-    # def get_photos(self):
-    #     return self.photo_set.all()
-
     class Meta:
         ordering = ("-created",)
 
@@ -30,6 +27,14 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     body = models.TextField(max_length=300)
     created = models.DateTimeField(auto_now_add=True)
+    liked = models.ManyToManyField(User, blank=True,related_name="comment_likes")
 
     def __str__(self):
         return str(self.body[:15])
+
+    @property
+    def like_comment(self):
+        return self.liked.all().count()
+    @property
+    def like_all(self):
+        return self.liked.all()

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from PIL import Image
 
 class Profile(models.Model):
     first_name = models.CharField(max_length=200, blank = True)
@@ -22,7 +23,19 @@ class Profile(models.Model):
     @property
     def userfollow(self):
         return self.user.followed.all().count()
+    @property 
+    def followers(self):
+        return self.user.followed.all()
 
     @property
     def totalpost(self):
         return self.post_set.all().count()
+    
+    def save(self,*args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.avatar.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (200,200)
+            img.thumbnail(output_size)
+            img.save(self.avatar.path)
