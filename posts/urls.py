@@ -10,7 +10,7 @@ from .views import (
     save_list,
     search,
     like_unlike_comment,
-    # comment_data_view
+    delete_comment
 )
 
 app_name = 'posts'
@@ -25,9 +25,9 @@ urlpatterns = [
     #list of the saved posts
     path('savelist/', save_list, name='savelist'),
      path('search/', search, name='search'),
+     path('comment/delete_comment/', delete_comment, name='delete-comment'),
   
     path('<int:pk>/', post_detail, name='post-detail'),
-    # path('<int:pk>/comments/', comment_data_view, name='post-comment-detail'),
     path('<pk>/update/', update_post, name='post-update'),
     path('<pk>/delete/', delete_post, name='post-delete'),
     path('<pk>/pk/', post_detail_data_view, name='post-detail-data'),

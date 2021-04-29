@@ -257,16 +257,23 @@ a {
 }
 
 .search-result {
-  background-color: rgb(67, 48, 85);
+  position: relative;
+  background-color: rgb(77, 56, 97);
   color: white;
   border-left: 7px solid rgb(141, 10, 180);
-  padding: 6px 5px;
+  padding: 0px;
 }
 .search-result:hover {
   border-left: 7px solid rgb(216, 113, 147);
   color: rgb(247, 182, 232);
 }
-
+.card-bodys {
+  padding: 14px;
+}
+.card-footers {
+  border-top: 1px dotted rgb(68, 47, 88);
+  padding: 5px;
+}
 .modals-header {
   background-color: rgb(48, 37, 58);
   border-bottom: 7px solid rgb(115, 17, 172);
@@ -318,4 +325,14 @@ a {
   background: rgb(17, 7, 26);
   padding: 10px;
   border: 1px dotted rgb(179, 17, 171);
+}
+.cmnt-delete {
+  position: absolute;
+  background-color: #ef316d;
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  right: 10px;
+  top: 10px;
 }

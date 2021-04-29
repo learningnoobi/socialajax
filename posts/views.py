@@ -116,6 +116,8 @@ def post_detail(request, pk):
                 'user':instance.user.username,
                 'id':instance.id,
                 'avatar':instance.user.profile.avatar.url,
+                'can_delete':True if instance.user.username ==request.user.username else False
+
             })
     context = {
         'obj': obj,
@@ -123,6 +125,7 @@ def post_detail(request, pk):
         'commentform':commentform,
         'comment_count': comment_count,
         'comments': comments,
+        
     }
 
     return render(request, 'posts/detail.html', context)
@@ -151,12 +154,31 @@ def post_detail_data_view(request, pk):
                 'id':obj.id,
                 'avatar':obj.user.profile.avatar.url,
                 'like_comment':obj.like_comment,
-                'comment_liked':True if request.user in obj.liked.all() else False
+                'comment_liked':True if request.user in obj.liked.all() else False,
+                'can_delete':True if obj.user.username ==request.user.username else False
             }
             post_comments.append(posts)
         return JsonResponse({'data': data,'post_comments':post_comments})
     return redirect('posts:main-board')
 
+@login_required(login_url='profiles:login')
+def delete_comment(request):
+    if request.method == "POST":
+        pk = request.POST.get("pk")
+        obj = Comment.objects.get(pk=pk)
+        if obj.user ==request.user:
+            if request.is_ajax():
+                obj.delete()
+                return JsonResponse({
+                    'msg':'Deleted !',
+                    'author':obj.user.username,
+                    'current_user':request.user.username,
+                    'can_delete':True if obj.user.username ==request.user.username else False
+                    })
+        else:
+            return JsonResponse({'msg':'No'})
+
+    return redirect('posts:main-board')
 
 
 

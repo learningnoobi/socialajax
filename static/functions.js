@@ -172,7 +172,7 @@ const commentlike = () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const clickedId = e.target.getAttribute("data-comment-id");
-
+ 
       clickedBtn = document.getElementById(`like-comment-${clickedId}`);
 
       $.ajax({
@@ -196,3 +196,43 @@ const commentlike = () => {
       });
     })
   )};
+
+  const commentDelete = () => {
+  const deleteCommentForms = [
+    ...document.getElementsByClassName("delete-comment-forms"),
+  ];
+  console.log(deleteCommentForms)
+  deleteCommentForms.forEach((form) =>
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const clickedId = e.target.getAttribute("data-comment-id");
+  
+      clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
+      comment = document.getElementById(`com-${clickedId}`)
+      console.log(comment)
+      $.ajax({
+        type: "POST",
+        url: "/comment/delete_comment/",
+        data: {
+          csrfmiddlewaretoken: csrftoken,
+          pk: clickedId,
+        },
+        success: function (response) {
+          console.log(response)
+          if(response.msg=="No"){
+            handlealerts("failed","You can't delete this !")
+          }
+          else{
+            handlealerts("added",response.msg)
+            comment.style.display = "none"
+          }
+        
+        },
+        error: function (err) {
+          console.log(err);
+          handlealerts("failed","something's wrong !")
+        },
+      });
+    })
+  )};
+  

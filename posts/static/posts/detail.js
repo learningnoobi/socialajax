@@ -15,7 +15,6 @@ const updateForm = document.getElementById("update-form");
 const deleteForm = document.getElementById("delete-form");
 const commentForm = document.getElementById("comment-form");
 const commentDiv = document.getElementById("comment-div");
-
 const commentBox = document.getElementById("comment-box");
 //get detail view
 $.ajax({
@@ -36,6 +35,7 @@ $.ajax({
     detail_div.innerHTML = `
     <div class="col-lg-6 col-md-10 col-sm-11 m-auto card mt-2">
     <div class="card-body d-flex ">
+    
       <span>
       
       <a class="author" href="/${el.author}">
@@ -60,7 +60,7 @@ $.ajax({
     }</button>
      </form>
      <form class="save-forms" data-save-id="${el.id}">
-     <button id="save-${el.id}"  class="savepost mx-2">${
+     <button id="save-${el.id}" class="savepost mx-2">${
       el.important
         ? `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
      <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
@@ -74,8 +74,10 @@ $.ajax({
       //for comments
       res.forEach(com => {
         commentDiv.innerHTML +=`
-        <div class="search-result mt-2">
-         <div class="card-body d-flex ">
+        <div class="search-result mt-2" id="com-${com.id}">
+      
+       
+         <div class="card-bodys d-flex ">
              <span>
              <a class="author" href="/${com.user}">
              <img src="${com.avatar}" class="rounded-circle" width="45" /> 
@@ -87,8 +89,16 @@ $.ajax({
                 <p>  ${com.body}</p>
         </div>
     </div>
-    <div class="card-footer">
-            
+
+    <div class="card-footers d-flex">
+    ${com.can_delete?`
+    <form class="delete-comment-forms" data-comment-id="${com.id}">
+    <button id="delete-comment-${com.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
+    </form>`:``
+
+    }
+   
+
     <form class="like-comment-forms" data-comment-id="${com.id}">
    <button id="like-comment-${com.id}" class="loadmoresm mx-2">
    ${com.comment_liked?
@@ -96,7 +106,8 @@ $.ajax({
     <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
   </svg>`:`${com.like_comment} Like`}</button>
    
-    <form>
+    </form>
+    <button class="savepostsm mx-1">Reply</button>
     </div>
   
 </div>`;
@@ -110,7 +121,8 @@ $.ajax({
     loading.style.display = "none";
     likeUnlikePosts();
     saveUnsaveForms();
-    commentlike()
+    commentlike();
+    commentDelete();
   },
 
   error: function (error) {
@@ -154,6 +166,7 @@ updateForm.addEventListener("submit", function (e) {
 deleteForm.addEventListener("submit", function (e) {
   e.preventDefault();
 
+ 
   $.ajax({
     type: "POST",
     url: deleteUrl,
@@ -188,10 +201,9 @@ commentForm.addEventListener("submit", (e) => {
       commentDiv.insertAdjacentHTML(
         "afterbegin",
         `
-        
-        
          <div class="animate__animated animate__bounce animate__delay-0s search-result mt-2">
-          <div class="card-body d-flex ">
+         <button class="cmnt-delete"><i class="fa fa-trash"></i></button>
+          <div class="card-bodys d-flex ">
               <span>
               <a class="author" href="/${res.user}">
               <img src="${res.avatar}" class="rounded-circle" width="45" /> 
@@ -199,16 +211,19 @@ commentForm.addEventListener("submit", (e) => {
                </span>
              <div class="mx-3">
               <a class="author" href="/${res.user}">${res.user}</a> </br>
-            
                  <p>  ${res.body}</p>
          </div>
      </div>
-     <form class="like-comment-forms" data-follow-id="${res.id}">
-     <button id="like-comment-${res.id}" class="loadmoresm mx-2">0 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-       </svg></button>
-     <form>
+     <div class="card-footers d-flex">
+   
+  
+     <form class="like-comment-forms" data-comment-id="${res.id}">
+    <button id="like-comment-${res.id}" class="loadmoresm mx-2">0 Like</button>
+    
+     </form>
+     <button class="savepostsm mx-1">Reply</button>
      </div>
+  
  </div>
         `
       );
@@ -222,6 +237,4 @@ commentForm.addEventListener("submit", (e) => {
     },
   });
 });
-
-
 
