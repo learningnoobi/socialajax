@@ -16,6 +16,9 @@ const deleteForm = document.getElementById("delete-form");
 const commentForm = document.getElementById("comment-form");
 const commentDiv = document.getElementById("comment-div");
 const commentBox = document.getElementById("comment-box");
+
+
+
 //get detail view
 $.ajax({
   type: "GET",
@@ -53,9 +56,7 @@ $.ajax({
          <form class="like-unlike-forms" data-form-id="${el.id}">
          <button class="loadmore" mx-2" id="like-unlike-${el.id}">${
       el.liked
-        ? `${el.count} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-       </svg>  `
+        ? `${el.count}<i class="fa fa-heart mx-2"></i>`
         : ` ${el.count} Like`
     }</button>
      </form>
@@ -97,24 +98,30 @@ $.ajax({
     </form>`:``
 
     }
-   
-
     <form class="like-comment-forms" data-comment-id="${com.id}">
    <button id="like-comment-${com.id}" class="loadmoresm mx-2">
    ${com.comment_liked?
-  ` ${com.like_comment}<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-  </svg>`:`${com.like_comment} Like`}</button>
+  ` ${com.like_comment}<i class="fa fa-heart mx-2"></i>`:`${com.like_comment} Like`}</button>
    
     </form>
-    <button class="savepostsm mx-1">Reply</button>
+     <form class="reply-comment-forms" data-reply-id="${com.id}" >
+        <button id="show-reply-${com.id}" class="savepostsm mx-1">
+        <i class="fa fa-comment-dots mx-1"></i></button>
+        <div id="replybox-${com.id}" class="replybox d-none">
+          <input class="comment-box" id="replyinput-${com.id}" placeholder="reply..." />
+        </div>
+      </form>
     </div>
-  
-</div>`;
+   
+</div>
+`;
 
       })
       if (res.length < 1) {
         commentDiv.textContent =`No comments added yet!`
+      }
+      else{
+        
       }
     titleInput.value = el.title;
     bodyInput.value = el.body;
@@ -122,7 +129,9 @@ $.ajax({
     likeUnlikePosts();
     saveUnsaveForms();
     commentlike();
+  
     commentDelete();
+    commentreply()
   },
 
   error: function (error) {
@@ -201,8 +210,8 @@ commentForm.addEventListener("submit", (e) => {
       commentDiv.insertAdjacentHTML(
         "afterbegin",
         `
-         <div class="animate__animated animate__bounce animate__delay-0s search-result mt-2">
-         <button class="cmnt-delete"><i class="fa fa-trash"></i></button>
+         <div  class="animate__animated animate__bounce animate__delay-0s search-result mt-2">
+        
           <div class="card-bodys d-flex ">
               <span>
               <a class="author" href="/${res.user}">
@@ -237,4 +246,3 @@ commentForm.addEventListener("submit", (e) => {
     },
   });
 });
-

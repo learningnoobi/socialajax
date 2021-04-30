@@ -68,9 +68,7 @@ const likeUnlikePosts = () => {
         },
         success: function (response) {
           clickedBtn.innerHTML = response.liked
-            ? `${response.count} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-              </svg>`
+            ? `${response.count}<i class="fa fa-heart mx-2"></i>`
             : `${response.count} Like`;
             
         },
@@ -173,7 +171,7 @@ const commentlike = () => {
       e.preventDefault();
       const clickedId = e.target.getAttribute("data-comment-id");
  
-      clickedBtn = document.getElementById(`like-comment-${clickedId}`);
+      const clickedBtn = document.getElementById(`like-comment-${clickedId}`);
 
       $.ajax({
         type: "POST",
@@ -207,8 +205,9 @@ const commentlike = () => {
       e.preventDefault();
       const clickedId = e.target.getAttribute("data-comment-id");
   
-      clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
-      comment = document.getElementById(`com-${clickedId}`)
+      const clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
+    
+      const comment = document.getElementById(`com-${clickedId}`)
       console.log(comment)
       $.ajax({
         type: "POST",
@@ -235,4 +234,32 @@ const commentlike = () => {
       });
     })
   )};
+
+
+
+
+
+  const commentreply = () => {
+    const showreplyforms = [
+      ...document.getElementsByClassName("reply-comment-forms"),
+    ];
+    // console.log(showreplyforms)
+    showreplyforms.forEach((form) =>
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const clickedId = e.target.getAttribute("data-reply-id");
+        const difbtn = document.getElementById(`show-reply-${clickedId}`);
+        const replybox = document.getElementById(`replybox-${clickedId}`);
+        const replyinput = document.getElementById(`replyinput-${clickedId}`);
+        // console.log(replybox)
+        // console.log(difbtn)
+        replybox.classList.toggle("d-block")
+        replybox.classList.toggle("d-none")
+        // console.log(replyinput)
+        replyinput.addEventListener('keyup',(e)=>{
+          console.log(e.target.value)
+        })
+      })
+    )};
+  
   

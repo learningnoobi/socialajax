@@ -24,12 +24,12 @@
                  <span class="small">{{profile.bio}}</span>
                 <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
                     <div class="d-flex flex-column"> <span class="articles">Posts</span> <span class="number1">{{profile.totalpost}}</span> </div>
-                    <div class="d-flex flex-column">
+                    <div data-bs-toggle="modal" data-bs-target="#followersModal"class="d-flex flex-column openmodal">
                       
                      <span 
-                    class="followers">Followers</span> <span id="followers" class="number2">{{profile.userfollow}}</span> 
+                    class="followers mx-1">Followers</span> <span id="followers" class="number2">{{profile.userfollow}}</span> 
                      </div>
-                    <div  data-bs-toggle="modal" data-bs-target="#followingModal" class="d-flex flex-column"> 
+                    <div data-bs-toggle="modal" data-bs-target="#followingModal" class="d-flex flex-column openmodal"> 
                     <span class="rating"  >Following</span> <span class="number3">{{profile.ifollow}}</span> </div>
                    
                 </div>
@@ -91,7 +91,7 @@
                          <img src="{{foll.profile.avatar.url}}" class="rounded" width="55" /> 
                         <h6 class="author mx-2 mt-3"> {{foll}}</h6>
                          </span></a>
-                          <button id="btn" type="submit" class="flex-end btn btn-sm btn-primary ml-2">Unfollow</button>
+                         
                        </div>
                    
                     </div>    
@@ -104,6 +104,38 @@
         </div>
     </div>
  <!-- Modal -->
+
+ <!-- Modal -->
+    <div class="modal fade" id="followersModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header modals-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Followers</h5>
+                    <button type="button" class="btn-close add-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body modals"> 
+                {% for foll in followers %}
+                     <div class="search-result mt-1 text-white">
+                       <div class="d-flex justify-content-between">
+                       <a href="/{{foll.user.username}}"><span class="d-flex">
+                         <img src="{{foll.avatar.url}}" class="rounded" width="55" /> 
+                        <h6 class="author mx-2 mt-3"> {{foll.user.username}}</h6>
+                         </span></a>
+                         
+                       </div>
+                   
+                    </div>    
+                        {% empty %}
+                       Not Following Any Users !           
+                {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Modal -->
+
+
 
  <!-- Modal -->
     <div class="modal fade " id="profileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

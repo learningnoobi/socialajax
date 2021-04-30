@@ -19,6 +19,7 @@ def profile(request,username):
     
     instance = Profile.objects.get(user=request.user) 
     following = profile.following.all()
+    followers = profile.followers
     
     follow = False
     if profile.user in instance.following.all():
@@ -40,6 +41,7 @@ def profile(request,username):
         "posts":posts,
         "form":form,
         "follow":follow,
+        "followers":followers,
         "instance":instance,
         "following":following
         }

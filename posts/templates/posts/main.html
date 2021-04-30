@@ -1,80 +1,102 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
+<!---->
+{% block title %} Home {% endblock title %} {% block scripts %}
+<script src="{% static 'posts/main.js' %}" defer></script>
+{% endblock scripts %} {% block content %}
+<span class="d-flex justify-content-center">
+  <div class="spinner-border m-auto text-danger" id="loading">
+    <span class="sr-only text-center"></span>
+  </div>
+  {% if request.user.is_authenticated %}
+  <button
+    class="loadmore"
+    id="addpost"
+    data-bs-toggle="modal"
+    data-bs-target="#addPostModal"
+  >
+    Add Post
+  </button>
+  {% else %}
+  <a href="{% url 'profiles:login' %}">
+    <button class="savepost" id="addpost">Login</button></a
+  >
+  <a href="{% url 'profiles:register' %}"
+    ><button class="loadmore mx-2" id="addpost">Register</button></a
+  >
+  {% endif %}
+</span>
+{% comment %} modal {% endcomment %}
 
-{% block title %}
-Home 
-{% endblock title %}
+<div class="col-lg-6 m-auto searchform">
+  <form id="searchform">
+    {% csrf_token %}
+    <input
+      class="search-box"
+      type="text"
+      id="searchinput"
+      placeholder="Search"
+      ...
+    />
+  </form>
+  <div id="resultdiv" class="mt-1 resultdiv not-visible"></div>
+</div>
 
-    {% block scripts %}
-    <script src="{% static 'posts/main.js' %}" defer></script>
-    {% endblock scripts %}
-
-{% block content %}
-    <span class="d-flex justify-content-center">
-
- {% if request.user.is_authenticated %}    
-    <button class="loadmore" id="addpost"  data-bs-toggle="modal" data-bs-target="#addPostModal">Add Post</button>
-{% else %}
-    <a href="{% url 'profiles:login' %}">
-         <button class="savepost" id="addpost" >Login</button></a>
-        <a href="{% url 'profiles:register' %}"><button  class="loadmore mx-2" id="addpost" >Register</button></a>
-    {% endif %}
-    </span>
-    {% comment %} modal {% endcomment %}
-
-    <div class="col-lg-6 m-auto searchform">
-        <form id="searchform">
-        {% csrf_token %}
-         <input class="search-box" type="text" id="searchinput" placeholder="Search".../>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="addPostModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header modals-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create post</h5>
+        <button
+          type="button"
+          class="btn-close add-modal-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body modals">
+        <form id="post-form" autocomplete="off">
+          {% csrf_token %} {{form|crispy}}
+          <div class="modal-footer modals-footer">
+            <button
+              type="button"
+              class="btn btn-danger add-modal-close"
+              data-bs-dismiss="modal"
+            >
+              close
+            </button>
+            <button type="submit" id="add-btn" class="btn btn-success">
+              + add
+            </button>
+          </div>
         </form>
-          <div id="resultdiv" class="mt-1 resultdiv not-visible">
-    
-            </div>
+        {% comment %}
+        <form action="upload/" id="my-dropzone" class="dropzone dz not-visible">
+          {% csrf_token %}
+          <div class="fallback">
+            <input name="file" type="file" multiple />
+          </div>
+        </form>
+        {% endcomment %}
+      </div>
     </div>
-  
+  </div>
+</div>
 
- <!-- Modal -->
-    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header modals-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create post</h5>
-                    <button type="button" class="btn-close add-modal-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body modals">
-                     <form id="post-form" autocomplete="off">
-                        {% csrf_token %}
-                        {{form|crispy}}
-                        <div class="modal-footer modals-footer">
-                            <button type="button" class="btn btn-danger add-modal-close" data-bs-dismiss="modal">close</button>
-                            <button type="submit" id="add-btn" class="btn btn-success">+ add</button>
-                        </div>
-                    </form>
-                    {% comment %} <form action="upload/" id="my-dropzone" class="dropzone dz not-visible">
-                        {% csrf_token %}
-                        <div class="fallback">
-                            <input name="file" type="file" multiple />
-                        </div>
-                    </form> {% endcomment %}
-                </div>
-            </div>
-        </div>
-    </div>
+{% comment %} end modal {% endcomment %}
+<div id="alertBox"></div>
+<div class="row d-flex justify-content-center">
+  <div id="posts-box" class="col-lg-6 col-md-10 col-sm-10"></div>
+</div>
 
-
-    {% comment %} end modal {% endcomment %}
-    <div id="alertBox" >
-    </div>
-    <div class="row d-flex justify-content-center">
-        <div id="posts-box" class="col-lg-6 col-md-10 col-sm-10"></div>
-    </div>
- <div class="spinner-border m-auto text-danger" id="loading">
-         <span class="sr-only text-center"></span>
-    </div>
-     <div class="text-center mb-3 mt-4" id="end-box">
-        <button class="loadmore" id="load_btn">Load more</button>
-    </div>
-
+<div class="text-center mb-3 mt-4" id="end-box">
+  <button class="loadmore" id="load_btn">Load more</button>
+</div>
 
 {% endblock content %}

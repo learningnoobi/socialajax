@@ -319,7 +319,8 @@ a {
 }
 .infoimg {
   width: 55px;
-  max-height: 55px;
+  height: 55px;
+  object-fit: cover;
 }
 .com {
   background: rgb(17, 7, 26);
@@ -336,3 +337,12 @@ a {
   right: 10px;
   top: 10px;
 }
+.openmodal {
+  cursor: pointer;
+}
+/* .reply-comment-forms {
+  transition: 1000ms;
+}
+.replybox {
+  transition: 1000ms;
+} */

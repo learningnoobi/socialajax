@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from .forms import PostForm,CommentForm
 from profiles.models import Profile
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 @login_required(login_url='profiles:login')
 def post_list_and_create(request):
@@ -222,7 +223,11 @@ def search(request):
     if request.is_ajax():
         search = request.POST.get('search')
         res = None
-        qs = Post.objects.filter(title__icontains =search)
+        qs = Post.objects.filter(
+            Q(title__icontains =search) |
+            Q(body__icontains =search) 
+
+            )
         if len(qs) > 0 and len(search) > 0:
             data = []
             for pos in qs:
