@@ -354,3 +354,10 @@ a {
   margin-top: 5px;
   margin-left: 5%;
 }
+.replybtn {
+  position: absolute;
+  margin-top: 5px;
+  top: -10px;
+
+  right: 5px;
+}

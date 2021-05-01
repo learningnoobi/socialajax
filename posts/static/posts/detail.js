@@ -114,10 +114,10 @@ $.ajax({
        <button id="show-reply-${com.id}" class="savepostsm mx-1">
        <i class="fa fa-comment-dots mx-1"></i></button>
        <span id="replybox-${com.id}" class="replybox d-none">
-       <span class="">
+       <span style="position:relative;">
          <input type="text" class="d-inline comment-box" id="replyinput-${com.id}" placeholder="reply..." />
-         <button type="button" class="d-inline loadmoresm mx-1" id="replybutton-${com.id}">
-         <i class="fa fa-comment-dots"></i>
+         <button type="button" class="d-inline loadmoresm mx-1 replybtn" id="replybutton-${com.id}">
+         <i class="fa fa-comment-dots "></i>
          </button>
          </span>
        </div>
@@ -157,12 +157,7 @@ $.ajax({
 
 
       })
-      if (res.length < 1) {
-        commentDiv.textContent =`No comments added yet!`
-      }
-      else{
-        
-      }
+      
     titleInput.value = el.title;
     bodyInput.value = el.body;
     loading.style.display = "none";

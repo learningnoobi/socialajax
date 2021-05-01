@@ -245,9 +245,9 @@ const commentlike = () => {
     const showreplyforms = [
       ...document.getElementsByClassName("reply-comment-forms"),
     ];
-    // console.log(showreplyforms)
+    console.log(showreplyforms)
     showreplyforms.forEach((el) =>
-      el.addEventListener("submit", (e) => {
+      el.addEventListener('submit', function(e){
         e.preventDefault();
         const clickedId = e.target.getAttribute("data-reply-id");
         const difbtn = document.getElementById(`show-reply-${clickedId}`);
@@ -265,7 +265,11 @@ const commentlike = () => {
         // console.log(replyinput)
         replybutton.addEventListener('click',()=>{
           console.log(replyinput.value)
-          const body = replyinput.value
+          const body = replyinput.value.trim()
+          if(body.length <1){
+            alert('cannot be blank')
+          }
+          else{
             $.ajax({
               type: "POST",
               url: "/reply/comment/",
@@ -282,9 +286,7 @@ const commentlike = () => {
                 <div class="reply-div" id="com-${c.id}" >
               
                 <div class="reply-comment ">
-                <form class="delete-comment-forms" data-comment-id="${c.id}">
-                <button id="delete-comment-${c.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
-                </form>
+               
                  <img src="${c.avatar}" class="infoimg mx-2"/>
                  <div>
                     <a class="author" href="/${c.user}">${c.user}</a>
@@ -300,6 +302,8 @@ const commentlike = () => {
                 handlealerts("failed","something's wrong !")
               },
           });
+          }
+
         })
         
           
