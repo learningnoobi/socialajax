@@ -79,8 +79,8 @@ $.ajax({
   
        
         commentDiv.innerHTML +=`
-        ${com.is_parent ?
-        `
+      
+        
         <div class="search-result mt-2" id="com-${com.id}">
       
        
@@ -126,11 +126,16 @@ $.ajax({
    </div>
   
 </div>
-  <div class="reply-div">
+  <div id="reply-divs">
   ${child.map(c=> {
     return `
-    <div class="reply-div">
-     <div class="reply-comment">
+   
+     <div class="reply-div" id="com-${c.id}" >
+   
+     <div class="reply-comment ">
+     <form class="delete-comment-forms" data-comment-id="${c.id}">
+     <button id="delete-comment-${c.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
+     </form>
       <img src="${c.avatar}" class="infoimg mx-2"/>
       <div>
          <a class="author" href="/${c.user}">${c.user}</a>
@@ -143,7 +148,7 @@ $.ajax({
   }).join("")}
   </div>
 
-`:``}
+
 
 
 `;
@@ -265,7 +270,7 @@ commentForm.addEventListener("submit", (e) => {
     <button id="like-comment-${res.id}" class="loadmoresm mx-2">0 Like</button>
     
      </form>
-     <button class="savepostsm mx-1">Reply</button>
+     <button class="savepostsm mx-1"><i class="fa fa-comment-dots mx-1"></i></button>
      </div>
   
  </div>

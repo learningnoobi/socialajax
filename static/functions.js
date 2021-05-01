@@ -208,6 +208,7 @@ const commentlike = () => {
       const clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
     
       const comment = document.getElementById(`com-${clickedId}`)
+      const replydiv = document.getElementById('reply-divs')
       // console.log(comment)
       $.ajax({
         type: "POST",
@@ -224,6 +225,7 @@ const commentlike = () => {
           else{
             handlealerts("added",response.msg)
             comment.style.display = "none"
+            replydiv.style.display = "none"
           }
         
         },
@@ -253,6 +255,7 @@ const commentlike = () => {
         const replyinput = document.getElementById(`replyinput-${clickedId}`);
         const replybutton = document.getElementById(`replybutton-${clickedId}`);
         const post_pk = document.getElementById('post_id').value
+        const replydiv = document.getElementById('reply-divs')
         // console.log(post_pk)
         // console.log(clickedId)
         // console.log(replybox)
@@ -272,9 +275,25 @@ const commentlike = () => {
                 pk: clickedId,
                 body:body
               },
-              success: function (response) {
-                console.log(response)
-             
+              success: function (c) {
+                console.log(c)
+                replydiv.insertAdjacentHTML("afterbegin",`
+   
+                <div class="reply-div" id="com-${c.id}" >
+              
+                <div class="reply-comment ">
+                <form class="delete-comment-forms" data-comment-id="${c.id}">
+                <button id="delete-comment-${c.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
+                </form>
+                 <img src="${c.avatar}" class="infoimg mx-2"/>
+                 <div>
+                    <a class="author" href="/${c.user}">${c.user}</a>
+                    <p>${c.body}</p>
+                 </div>
+               </div>
+               <div>
+               </div>`)
+               replyinput.value = ""
               },
               error: function (err) {
                 console.log(err);

@@ -144,7 +144,7 @@ def CommentReplyView(request):
         return JsonResponse({
                 'body':body,
                 'user':user.username,
-                'id':id,
+                'id':pk,
                 'avatar':user.profile.avatar.url,
             })
     else:
@@ -174,10 +174,11 @@ def post_detail_data_view(request, pk):
         for obj in comments:
             child_comments = []
             
-            child = obj.is_child
+            child = obj.is_child.order_by("-id")
             for chi in child:
                 child_com = {
                     'body':chi.body,
+                    'id':chi.id,
                     'user':chi.user.username,
                     'avatar':chi.user.profile.avatar.url,
                     
