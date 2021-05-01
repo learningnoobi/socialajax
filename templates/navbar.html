@@ -24,6 +24,19 @@
 
       <div class="d-flex align-items-center">
         {% if request.user.is_authenticated %}
+        <span style="postition: relative">
+          <span class="btnhold">
+            <button class="nav-link author bell" id="notifications">
+              <i class="fa fa-bell"></i>
+            </button>
+            <span class="notnum">3</span>
+          </span>
+          <div id="noticeboard" class="notice-list d-none">
+            <a class="li-bell" href="#">Sasuke followed you .</a>
+            <a class="li-bell" href="#">Rayon liked your photo .</a>
+            <a class="li-bell" href="#">Naruto commented on your photo .</a>
+          </div>
+        </span>
         <a class="nav-link author" href="{% url 'profiles:logout' %}"
           >Log Out</a
         >

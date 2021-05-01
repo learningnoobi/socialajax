@@ -109,7 +109,7 @@
 {% if request.user.is_authenticated %}
 
 <form
-  class="form-inline col-lg-6 m-auto commentform"
+  class="form-inline col-lg-6 col-md-9 col-sm-10 m-auto commentform"
   action="."
   id="comment-form"
 >
@@ -119,7 +119,7 @@
   </button>
 </form>
 {% else %}
-<div class="form-inline col-lg-6 m-auto commentform" id="comment-form">
+<div class="form-inline col-lg-6 col-md-8 m-auto commentform" id="comment-form">
   {% csrf_token %} {{commentform}}
   <a href="{% url 'profiles:login' %}"
     ><button type="button" class="cmnt-post postcmnt">

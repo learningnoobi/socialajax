@@ -359,3 +359,52 @@ a {
   top: -10px;
   right: 5px;
 }
+.bell {
+  background-color: rgb(159, 125, 168);
+  color: white;
+  border-radius: 47%;
+  border: none;
+}
+.notice-list {
+  position: absolute;
+  width: 300px;
+  background-color: rgb(137, 109, 145);
+  display: flex;
+  color: white;
+  margin-top: 10px;
+  right: 20%;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 343;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+.notice-list a {
+  text-decoration: none;
+  color: white;
+  font-size: 14px;
+  padding-left: 7px;
+  line-height: 30px;
+}
+.show {
+  display: flex;
+  flex-direction: column;
+}
+.notice-list a:hover {
+  background-color: rgb(159, 125, 168);
+}
+.btnhold {
+  position: relative;
+}
+.notnum {
+  position: absolute;
+  background-color: #e11451;
+  font-size: 10px;
+  font-weight: 700;
+  top: -5px;
+  left: 35px;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 45%;
+}

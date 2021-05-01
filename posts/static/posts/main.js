@@ -310,11 +310,15 @@ searchinput.addEventListener("keyup", function (e) {
   sendSearchData(e.target.value);
 });
 
+
+
+
 // disapper search result when clicked outside
 const objRef = document.body;
 
 objRef.addEventListener("click", () => {
   resultdiv.classList.add("not-visible");
   searchinput.value = "";
+  
 });
 // disapper search result when clicked outside

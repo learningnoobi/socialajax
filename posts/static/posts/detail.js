@@ -57,7 +57,7 @@ $.ajax({
          <form class="like-unlike-forms" data-form-id="${el.id}">
          <button class="loadmore" mx-2" id="like-unlike-${el.id}">${
       el.liked
-        ? `${el.count}<i class="fa fa-heart mx-2"></i>`
+        ? `${el.count}<i class="fa fa-heart mx-1"></i>`
         : ` ${el.count} Like`
     }</button>
      </form>
@@ -107,7 +107,7 @@ $.ajax({
    <form class="like-comment-forms" data-comment-id="${com.id}">
   <button id="like-comment-${com.id}" class="loadmoresm mx-2">
   ${com.comment_liked?
- ` ${com.like_comment}<i class="fa fa-heart mx-2"></i>`:`${com.like_comment} Like`}</button>
+ ` ${com.like_comment}<i class="fa fa-heart mx-1"></i>`:`${com.like_comment} Like`}</button>
   
    </form>
     <form class="reply-comment-forms" data-reply-id="${com.id}" >
@@ -116,7 +116,7 @@ $.ajax({
        <span id="replybox-${com.id}" class="replybox d-none">
        <span style="position:relative;">
          <input type="text" class="d-inline comment-box" id="replyinput-${com.id}" placeholder="reply..."  />
-         <button type="button" class="d-inline loadmoresm mx-1 replybtn" id="replybutton-${com.id}">
+         <button type="button" class="d-inline savepostsm mx-1 replybtn" id="replybutton-${com.id}">
          <i class="fa fa-comment-dots "></i>
          </button>
          </span>
@@ -147,7 +147,7 @@ $.ajax({
     <form class="like-comment-forms" data-comment-id="${c.id}">
     <button id="like-comment-${c.id}" class="loadmoresm mx-2">
     ${c.comment_liked?
-   ` ${c.like_comment}<i class="fa fa-heart mx-2"></i>`:`${c.like_comment} Like`}</button>
+   ` ${c.like_comment}<i class="fa fa-heart mx-1"></i>`:`${c.like_comment} Like`}</button>
     
      </form>
     </div>
@@ -279,7 +279,7 @@ commentForm.addEventListener("submit", (e) => {
     <button id="like-comment-${res.id}" class="loadmoresm mx-2">0 Like</button>
     
      </form>
-     <button class="savepostsm mx-1"><i class="fa fa-comment-dots mx-1"></i></button>
+    
      </div>
   
  </div>

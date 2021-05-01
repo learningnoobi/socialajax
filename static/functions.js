@@ -15,6 +15,15 @@ setInterval(() => {
   alertBox.style.display = "none";
 }, 5000);
 
+//show notifications
+const notificaions = document.querySelector("#notifications");
+const noticeboard = document.querySelector("#noticeboard");
+notificaions.addEventListener('click',(e) => {
+  noticeboard.classList.toggle('show')
+  noticeboard.classList.toggle('d-none')
+})
+
+
 const first = document.querySelector("#id_password1");
 const second = document.querySelector("#id_password2");
 const third = document.querySelector("#login_password");
