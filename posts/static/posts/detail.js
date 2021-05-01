@@ -26,8 +26,9 @@ $.ajax({
   success: function (response) {
     console.log(response);
     const el = response.data;
-    res = response.post_comments
- 
+   const  res = response.post_comments
+    const child = response.post_comments.child
+    
     if (el.logged_in !== el.author) {
       console.log("different");
     } else {
@@ -40,7 +41,7 @@ $.ajax({
     <div class="card-body d-flex ">
     
       <span>
-      
+      <input type="hidden" id="post_id" value="${el.id}" />
       <a class="author" href="/${el.author}">
       <img src="${el.avatar}" class="rounded-circle" width="45" /> 
       </a>
@@ -74,47 +75,81 @@ $.ajax({
 </div>`;
       //for comments
       res.forEach(com => {
+        var child = com.child
+  
+       
         commentDiv.innerHTML +=`
+        ${com.is_parent ?
+        `
         <div class="search-result mt-2" id="com-${com.id}">
       
        
-         <div class="card-bodys d-flex ">
-             <span>
-             <a class="author" href="/${com.user}">
-             <img src="${com.avatar}" class="rounded-circle" width="45" /> 
-             </a>
-              </span>
-            <div class="mx-3">
-             <a class="author" href="/${com.user}">${com.user}</a> </br>
-           
-                <p>  ${com.body}</p>
-        </div>
-    </div>
+        <div class="card-bodys d-flex ">
+            <span>
+            <a class="author" href="/${com.user}">
+            <img src="${com.avatar}" class="rounded-circle" width="45" /> 
+            </a>
+             </span>
+           <div class="mx-3">
+            <a class="author" href="/${com.user}">${com.user}</a> </br>
+          
+               <p>  ${com.body}</p>
+       </div>
+   </div>
 
-    <div class="card-footers d-flex">
-    ${com.can_delete?`
-    <form class="delete-comment-forms" data-comment-id="${com.id}">
-    <button id="delete-comment-${com.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
-    </form>`:``
+   <div class="card-footers d-flex">
+   ${com.can_delete?`
+   <form class="delete-comment-forms" data-comment-id="${com.id}">
+   <button id="delete-comment-${com.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
+   </form>`:``
 
-    }
-    <form class="like-comment-forms" data-comment-id="${com.id}">
-   <button id="like-comment-${com.id}" class="loadmoresm mx-2">
-   ${com.comment_liked?
-  ` ${com.like_comment}<i class="fa fa-heart mx-2"></i>`:`${com.like_comment} Like`}</button>
-   
-    </form>
-     <form class="reply-comment-forms" data-reply-id="${com.id}" >
-        <button id="show-reply-${com.id}" class="savepostsm mx-1">
-        <i class="fa fa-comment-dots mx-1"></i></button>
-        <div id="replybox-${com.id}" class="replybox d-none">
-          <input class="comment-box" id="replyinput-${com.id}" placeholder="reply..." />
-        </div>
-      </form>
-    </div>
-   
+   }
+   <form class="like-comment-forms" data-comment-id="${com.id}">
+  <button id="like-comment-${com.id}" class="loadmoresm mx-2">
+  ${com.comment_liked?
+ ` ${com.like_comment}<i class="fa fa-heart mx-2"></i>`:`${com.like_comment} Like`}</button>
+  
+   </form>
+    <form class="reply-comment-forms" data-reply-id="${com.id}" >
+       <button id="show-reply-${com.id}" class="savepostsm mx-1">
+       <i class="fa fa-comment-dots mx-1"></i></button>
+       <span id="replybox-${com.id}" class="replybox d-none">
+       <span class="">
+         <input type="text" class="d-inline comment-box" id="replyinput-${com.id}" placeholder="reply..." />
+         <button type="button" class="d-inline loadmoresm mx-1" id="replybutton-${com.id}">
+         <i class="fa fa-comment-dots"></i>
+         </button>
+         </span>
+       </div>
+     </form>
+
+   </div>
+  
 </div>
+  <div class="reply-div">
+  ${child.map(c=> {
+    return `
+    <div class="reply-div">
+     <div class="reply-comment">
+      <img src="${c.avatar}" class="infoimg mx-2"/>
+      <div>
+         <a class="author" href="/${c.user}">${c.user}</a>
+         <p>${c.body}</p>
+      </div>
+    </div>
+    <div>
+    </div>
+    </div>`
+  }).join("")}
+  </div>
+
+`:``}
+
+
 `;
+
+
+
 
       })
       if (res.length < 1) {

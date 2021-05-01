@@ -10,7 +10,8 @@ from .views import (
     save_list,
     search,
     like_unlike_comment,
-    delete_comment
+    delete_comment,
+    CommentReplyView
 )
 
 app_name = 'posts'
@@ -21,6 +22,7 @@ urlpatterns = [
     path('like-unlike/', like_unlike_post, name='like-unlike'),
     path('like-unlike-comment/', like_unlike_comment, name='like-unlike-comment'),
     path('save/', important_post, name='save'),
+    path('reply/comment/', CommentReplyView, name='replycomment'),
 
     #list of the saved posts
     path('savelist/', save_list, name='savelist'),

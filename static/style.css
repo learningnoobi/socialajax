@@ -340,9 +340,17 @@ a {
 .openmodal {
   cursor: pointer;
 }
-/* .reply-comment-forms {
-  transition: 1000ms;
+.reply-div {
+  position: relative;
+  width: 100%;
 }
-.replybox {
-  transition: 1000ms;
-} */
+.reply-comment {
+  position: relative;
+  background-color: rgb(91, 69, 110);
+  border-right: 7px solid rgb(223, 31, 181);
+  display: flex;
+  justify-content: end;
+  padding: 14px;
+  margin-top: 5px;
+  margin-left: 5%;
+}

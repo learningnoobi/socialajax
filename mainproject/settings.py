@@ -133,3 +133,4 @@ MEDIA_ROOT = BASE_DIR /'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+GOOGLE_RECAPTCHA_SECRET_KEY = '6LdVwsEaAAAAAO1LS_GJg9k1ofCbmjGMzeQfKpJh'

@@ -165,7 +165,7 @@ const commentlike = () => {
   const likeCommentForms = [
     ...document.getElementsByClassName("like-comment-forms"),
   ];
-  console.log(likeCommentForms)
+  // console.log(likeCommentForms)
   likeCommentForms.forEach((form) =>
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -199,7 +199,7 @@ const commentlike = () => {
   const deleteCommentForms = [
     ...document.getElementsByClassName("delete-comment-forms"),
   ];
-  console.log(deleteCommentForms)
+  // console.log(deleteCommentForms)
   deleteCommentForms.forEach((form) =>
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -208,7 +208,7 @@ const commentlike = () => {
       const clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
     
       const comment = document.getElementById(`com-${clickedId}`)
-      console.log(comment)
+      // console.log(comment)
       $.ajax({
         type: "POST",
         url: "/comment/delete_comment/",
@@ -244,21 +244,48 @@ const commentlike = () => {
       ...document.getElementsByClassName("reply-comment-forms"),
     ];
     // console.log(showreplyforms)
-    showreplyforms.forEach((form) =>
-      form.addEventListener("submit", (e) => {
+    showreplyforms.forEach((el) =>
+      el.addEventListener("submit", (e) => {
         e.preventDefault();
         const clickedId = e.target.getAttribute("data-reply-id");
         const difbtn = document.getElementById(`show-reply-${clickedId}`);
         const replybox = document.getElementById(`replybox-${clickedId}`);
         const replyinput = document.getElementById(`replyinput-${clickedId}`);
+        const replybutton = document.getElementById(`replybutton-${clickedId}`);
+        const post_pk = document.getElementById('post_id').value
+        // console.log(post_pk)
+        // console.log(clickedId)
         // console.log(replybox)
-        // console.log(difbtn)
+       
         replybox.classList.toggle("d-block")
         replybox.classList.toggle("d-none")
         // console.log(replyinput)
-        replyinput.addEventListener('keyup',(e)=>{
-          console.log(e.target.value)
+        replybutton.addEventListener('click',()=>{
+          console.log(replyinput.value)
+          const body = replyinput.value
+            $.ajax({
+              type: "POST",
+              url: "/reply/comment/",
+              data: {
+                csrfmiddlewaretoken: csrftoken,
+                post_pk:post_pk,
+                pk: clickedId,
+                body:body
+              },
+              success: function (response) {
+                console.log(response)
+             
+              },
+              error: function (err) {
+                console.log(err);
+                handlealerts("failed","something's wrong !")
+              },
+          });
         })
+        
+          
+  
+       
       })
     )};
   

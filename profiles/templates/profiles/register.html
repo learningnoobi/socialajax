@@ -1,75 +1,74 @@
-{% extends 'base.html' %}
-{% load static %}
-{% load crispy_forms_tags %}
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
+<!---->
+{% block title %} Join Us - Register {% endblock title %} {% block scripts %}
+<script src="{% static 'profiles/auth.js' %}" defer></script>
+{% endblock scripts %} {% block css %}
+<link rel="stylesheet" href="{% static 'profiles/profiles.css' %}" />
+{% endblock css %} {% block content %}
+<div id="alertBox"></div>
+<div class="col-lg-6 m-auto h-100">
+  <div class="d-flex justify-content-center h-100">
+    <div class="user_card">
+      <div class="d-flex justify-content-start">
+        <h3 id="form-title">Join Us</h3>
+      </div>
+      <div class="d-flex justify-content-center form_container">
+        <form method="POST" action="">
+          {% csrf_token %} {% if form.errors %}
+          <div class="loadmore">
+            {% for field in form %} {% for error in field.errors %}
+            <!-- Output error text message only -->
+            <div>{{error}}</div>
+            {% endfor %} {% endfor %}
+          </div>
+          {% endif %}
+          <div class="input-group mb-3">
+            <i class="fa fa-user"></i>
+            {{ form.username }}
+          </div>
+          <span class="feed">
+            <div
+              class="invalid_feedback invalid-feedback"
+              style="display: none"
+            ></div>
+            <p class="text-sm text-success usernameSuccessOutput"></p>
+          </span>
+          <div class="input-group mb-2">
+            <i class="fa fa-envelope-square"></i>
+            {{ form.email }}
+          </div>
+          <div class="input-group mb-2">
+            <i onclick="showpassword(first)" class="fa fa-key keys"></i>
+            {{ form.password1 }}
+          </div>
+          <div class="input-group mb-2">
+            <i onclick="showpassword(second)" class="fa fa-key keys"></i>
+            {{ form.password2 }}
+          </div>
+          <div
+            class="g-recaptcha"
+            data-sitekey="6LdVwsEaAAAAAMSJmIgYlikCVu_PHqX2flkfjj_I"
+          ></div>
 
-{% block title %}
-Join Us - Register
-{% endblock title %}
+          <div class="d-flex justify-content-center mt-3 login_container">
+            <input
+              class="savepost"
+              type="submit"
+              id="registerbtn"
+              value="Register Account"
+            />
+          </div>
+        </form>
+      </div>
 
-   {% block scripts %}
-    <script src="{% static 'profiles/auth.js' %}" defer></script>
-    {% endblock scripts %}
-
-    {% block css %}
-        <link rel="stylesheet" href="{% static 'profiles/profiles.css' %}">
-    {% endblock css %}
-{% block content %} 
-      <div id="alertBox" >
+      <div class="mt-4">
+        <div class="d-flex justify-content-center links" style="color: white">
+          Already have an account?
+          <a href="{% url 'profiles:login' %}" class="author ml-2">Login</a>
+        </div>
+      </div>
     </div>
-   <div class="col-lg-6 m-auto h-100">
-		<div class="d-flex justify-content-center h-100">
-			<div class="user_card">
-				<div class="d-flex justify-content-start">
-					<h3 id="form-title">Join Us</h3>
-				</div>
-				<div class="d-flex justify-content-center form_container">
-               
-					<form method="POST" action="">
-						{% csrf_token %}
-						   			{% if form.errors %}
-									<div class="loadmore">
-										{% for field in form %}
-									 {% for error  in field.errors %}
-                  						  <!-- Output error text message only -->
-									<div>{{error}}</div>
-								{% endfor %}
-									{% endfor %}
-								</div>
-							{% endif %}
-						<div class="input-group mb-3">
-								<i class="fa fa-user"></i>							
-								{{ form.username }}
-						</div>
-						<span class="feed">
-						 <div class="invalid_feedback invalid-feedback" style="display:none">
-        				  </div>
-						<p class="text-sm text-success usernameSuccessOutput"></p>
-						</span>
-						<div class="input-group mb-2">
-								<i class="fa fa-envelope-square"></i>
-							{{ form.email }}
-						</div>
-						<div class="input-group mb-2">
-								<i onclick="showpassword(first)" class="fa fa-key keys"></i>
-							{{ form.password1 }}
-						</div>
-						<div class="input-group mb-2">
-								<i onclick="showpassword(second)" class="fa fa-key keys"></i>
-							{{ form.password2 }}
-						</div>
+  </div>
 
-				   		<div class="d-flex justify-content-center mt-3 login_container">
-				 			<input class="savepost" type="submit" id="registerbtn" value="Register Account">
-				   		</div>
-					</form>
-				</div>
-                
-				<div class="mt-4">
-					<div class="d-flex justify-content-center links " style="color: white;">
-						Already have an account? <a href="{% url 'profiles:login' %}" class="author ml-2">Login</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-{% endblock content %}
+  {% endblock content %}
+</div>

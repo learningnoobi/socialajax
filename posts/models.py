@@ -28,7 +28,7 @@ class Comment(models.Model):
     body = models.TextField(max_length=300)
     created = models.DateTimeField(auto_now_add=True)
     liked = models.ManyToManyField(User, blank=True,related_name="comment_likes")
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='+')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='parentchild')
 
     def __str__(self):
         return str(self.body[:15])
@@ -48,3 +48,7 @@ class Comment(models.Model):
         if self.parent is None:
             return True
         return False
+    
+    @property
+    def is_child(self):
+        return self.parentchild.all()

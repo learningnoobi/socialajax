@@ -9,8 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth import login, authenticate,logout
 import json
-
-
+from django.conf import settings
+import urllib
 @login_required(login_url='profiles:login')
 def profile(request,username):
     profile = get_object_or_404(Profile,user__username = username)
@@ -62,24 +62,42 @@ def follow_unfollow(request):
             return JsonResponse({'follow':True,'followers':obj.userfollow})
     return redirect(request.META.get('HTTP_REFERER'))
 
+
+
 def registerview(request):
-	if request.user.is_authenticated:
-		return redirect('posts:main-board')
-	else:
-		form = CreateUserForm()
-		if request.method == 'POST':
-			form = CreateUserForm(request.POST)
-			if form.is_valid():
-				form.save()
-				user = form.cleaned_data.get('username')
-				messages.success(request, 'Account was created for ' + user)
+    if request.user.is_authenticated:
+        return redirect('posts:main-board')
+    else:
+        form = CreateUserForm()
+        if request.method =='POST':
+            form = CreateUserForm(request.POST)
+            if form.is_valid():
+                recaptcha_response = request.POST.get('g-recaptcha-response')
+                url = 'https://www.google.com/recaptcha/api/siteverify'
+                values = { 
+                    'secret': settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+                     'response': recaptcha_response
+                     }
+                data = urllib.parse.urlencode(values).encode()
+                req =  urllib.request.Request(url, data=data)
+                response = urllib.request.urlopen(req)
+                result = json.loads(response.read().decode())
+                if result['success']:
+                    form.save()
+                    user = form.cleaned_data.get('username')
+                    messages.success(request, 'Account was created for ' + user)
+                else:
+                    messages.error(request,'Invalid')
+                return redirect('profiles:login')
+                
+        context = {'form':form}
+        return render(request, 'profiles/register.html', context)
+
+                
 
 
-				return redirect('profiles:login')
-			
 
-		context = {'form':form}
-		return render(request, 'profiles/register.html', context)
+
 
 def validate_username(request):
     if request.method=="POST":

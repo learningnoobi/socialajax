@@ -131,6 +131,28 @@ def post_detail(request, pk):
 
     return render(request, 'posts/detail.html', context)
 
+@login_required(login_url='profiles:login')
+def CommentReplyView(request):
+    if request.method=="POST":
+        post_pk = request.POST.get("post_pk")
+        post = Post.objects.get(pk=post_pk)
+        pk = request.POST.get("pk")
+        parent_comment = Comment.objects.get(pk=pk)
+        body = request.POST.get("body")  
+        user = request.user
+        Comment.objects.create(user=user,post=post,body=body,parent=parent_comment)
+        return JsonResponse({
+                'body':body,
+                'user':user.username,
+                'id':id,
+                'avatar':user.profile.avatar.url,
+            })
+    else:
+        return JsonResponse({'msg':"Something went wrong!"})
+
+        
+
+
 def post_detail_data_view(request, pk):
     if request.is_ajax():
         obj = Post.objects.get(pk=pk)
@@ -146,19 +168,41 @@ def post_detail_data_view(request, pk):
              'important':True if obj.important.filter(id=request.user.pk).exists() else False
         }
         comments = Comment.objects.filter(post=obj).order_by("-created")
-        print(comments)
+
         post_comments = []
+        
         for obj in comments:
-            posts = {
-                'body':obj.body,
-                'user':obj.user.username,
-                'id':obj.id,
-                'avatar':obj.user.profile.avatar.url,
-                'like_comment':obj.like_comment,
-                'comment_liked':True if request.user in obj.liked.all() else False,
-                'can_delete':True if obj.user.username ==request.user.username else False
-            }
-            post_comments.append(posts)
+            child_comments = []
+            
+            child = obj.is_child
+            for chi in child:
+                child_com = {
+                    'body':chi.body,
+                    'user':chi.user.username,
+                    'avatar':chi.user.profile.avatar.url,
+                    
+                }
+                child_comments.append(child_com)
+            if obj.is_parent is True:
+                posts = {
+                    'body':obj.body,
+                    'user':obj.user.username,
+                    'id':obj.id,
+                    'avatar':obj.user.profile.avatar.url,
+                    'like_comment':obj.like_comment,
+                    'comment_liked':True if request.user in obj.liked.all() else False,
+                    'can_delete':True if obj.user.username ==request.user.username else False,
+                    'is_parent':obj.is_parent,
+                    'child':child_comments
+                    
+                }
+
+                post_comments.append(posts)
+        
+
+        
+
+
         return JsonResponse({'data': data,'post_comments':post_comments})
     return redirect('posts:main-board')
 
@@ -180,7 +224,6 @@ def delete_comment(request):
             return JsonResponse({'msg':'No'})
 
     return redirect('posts:main-board')
-
 
 
 @login_required(login_url='profiles:login')
