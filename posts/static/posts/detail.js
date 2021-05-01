@@ -115,7 +115,7 @@ $.ajax({
        <i class="fa fa-comment-dots mx-1"></i></button>
        <span id="replybox-${com.id}" class="replybox d-none">
        <span style="position:relative;">
-         <input type="text" class="d-inline comment-box" id="replyinput-${com.id}" placeholder="reply..." />
+         <input type="text" class="d-inline comment-box" id="replyinput-${com.id}" placeholder="reply..."  />
          <button type="button" class="d-inline loadmoresm mx-1 replybtn" id="replybutton-${com.id}">
          <i class="fa fa-comment-dots "></i>
          </button>
@@ -126,22 +126,32 @@ $.ajax({
    </div>
   
 </div>
-  <div id="reply-divs">
+  <div  id="reply-divs">
   ${child.map(c=> {
     return `
    
      <div class="reply-div" id="com-${c.id}" >
    
      <div class="reply-comment ">
-     <form class="delete-comment-forms" data-comment-id="${c.id}">
+     <span class="d-flex reply-flex">
+     ${c.can_delete ?` <form class="delete-comment-forms" data-comment-id="${c.id}">
      <button id="delete-comment-${c.id}" class="cmnt-delete"><i class="fa fa-trash"></i></button>
-     </form>
+     </form>`:``}
+    
       <img src="${c.avatar}" class="infoimg mx-2"/>
       <div>
          <a class="author" href="/${c.user}">${c.user}</a>
          <p>${c.body}</p>
       </div>
+    </span>
+    <form class="like-comment-forms" data-comment-id="${c.id}">
+    <button id="like-comment-${c.id}" class="loadmoresm mx-2">
+    ${c.comment_liked?
+   ` ${c.like_comment}<i class="fa fa-heart mx-2"></i>`:`${c.like_comment} Like`}</button>
+    
+     </form>
     </div>
+ 
     <div>
     </div>
     </div>`
@@ -157,7 +167,11 @@ $.ajax({
 
 
       })
-      
+      const blank = document.getElementById("blank")
+      if (res.length < 1) {
+        blank.textContent =`No comments added yet!`
+      }
+
     titleInput.value = el.title;
     bodyInput.value = el.body;
     loading.style.display = "none";
@@ -271,7 +285,7 @@ commentForm.addEventListener("submit", (e) => {
  </div>
         `
       );
-
+      blank.textContent = ''
       commentForm.reset();
       commentlike()
     },

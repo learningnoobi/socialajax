@@ -146,6 +146,10 @@ def CommentReplyView(request):
                 'user':user.username,
                 'id':pk,
                 'avatar':user.profile.avatar.url,
+              
+                'can_delete':True if user.username ==request.user.username else False,
+         
+
             })
     else:
         return JsonResponse({'msg':"Something went wrong!"})
@@ -181,6 +185,9 @@ def post_detail_data_view(request, pk):
                     'id':chi.id,
                     'user':chi.user.username,
                     'avatar':chi.user.profile.avatar.url,
+                    'like_comment':chi.like_comment,
+                    'can_delete':True if chi.user.username ==request.user.username else False,
+                    'comment_liked':True if request.user in chi.liked.all() else False
                     
                 }
                 child_comments.append(child_com)

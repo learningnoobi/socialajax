@@ -208,7 +208,8 @@ const commentlike = () => {
       const clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
     
       const comment = document.getElementById(`com-${clickedId}`)
-      const replydiv = document.getElementById('reply-divs')
+      const replydiv = document.getElementById(`com-${clickedId}`)
+      const replydivs = document.getElementById('reply-divs')
       // console.log(comment)
       $.ajax({
         type: "POST",
@@ -226,6 +227,7 @@ const commentlike = () => {
             handlealerts("added",response.msg)
             comment.style.display = "none"
             replydiv.style.display = "none"
+           
           }
         
         },
@@ -256,6 +258,8 @@ const commentlike = () => {
         const replybutton = document.getElementById(`replybutton-${clickedId}`);
         const post_pk = document.getElementById('post_id').value
         const replydiv = document.getElementById('reply-divs')
+        const replydivs = document.getElementById(`com-${clickedId}`)
+
         // console.log(post_pk)
         // console.log(clickedId)
         // console.log(replybox)
@@ -281,17 +285,20 @@ const commentlike = () => {
               },
               success: function (c) {
                 console.log(c)
-                replydiv.insertAdjacentHTML("afterbegin",`
+                replydivs.insertAdjacentHTML("afterend",`
    
                 <div class="reply-div" id="com-${c.id}" >
               
                 <div class="reply-comment ">
-               
+                <span class="d-flex reply-flex">
+                
                  <img src="${c.avatar}" class="infoimg mx-2"/>
                  <div>
                     <a class="author" href="/${c.user}">${c.user}</a>
                     <p>${c.body}</p>
                  </div>
+                 </span>
+                
                </div>
                <div>
                </div>`)
