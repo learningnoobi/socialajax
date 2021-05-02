@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Post,Comment
-from django.http import JsonResponse
+from .models import Post,Comment,Notification
+from django.http import JsonResponse,HttpResponse
 from .forms import PostForm,CommentForm
 from profiles.models import Profile
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.views import View
+
 
 @login_required(login_url='profiles:login')
 def post_list_and_create(request):
@@ -68,6 +70,7 @@ def like_unlike_post(request):
         else:
             liked = True
             obj.liked.add(request.user)
+            notification = Notification.objects.create(notification_type=1, from_user=request.user, to_user=obj.author.user, post=obj)
         return JsonResponse({'liked': liked, 'count': obj.like_count})
     return redirect('posts:main-board')
 
@@ -81,6 +84,7 @@ def like_unlike_comment(request):
         else:
             liked = True
             obj.liked.add(request.user)
+            notification = Notification.objects.create(notification_type=1, from_user=request.user, to_user=obj.user, comment=obj)
         return JsonResponse({'liked': liked, 'count': obj.like_comment})
     return redirect('posts:main-board')
 
@@ -112,6 +116,7 @@ def post_detail(request, pk):
             instance.user = user
             instance.post = obj
             instance.save()
+            notification = Notification.objects.create(notification_type=2, from_user=request.user, to_user=obj.author.user, post=obj)
             return JsonResponse({
                 'body':instance.body,
                 'user':instance.user.username,
@@ -140,7 +145,8 @@ def CommentReplyView(request):
         parent_comment = Comment.objects.get(pk=pk)
         body = request.POST.get("body")  
         user = request.user
-        Comment.objects.create(user=user,post=post,body=body,parent=parent_comment)
+        newcomment = Comment.objects.create(user=user,post=post,body=body,parent=parent_comment)
+        notification = Notification.objects.create(notification_type=2, from_user=request.user, to_user=parent_comment.user, comment=newcomment)
         return JsonResponse({
                 'body':body,
                 'user':user.username,
@@ -297,3 +303,32 @@ def search(request):
         print(qs)
         return JsonResponse({'search':res})
     return JsonResponse({'error':'something is wrong'})
+
+class PostNotification(View):
+    def get(self, request, notification_pk, post_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        post = Post.objects.get(pk=post_pk)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        return redirect('posts:post-detail', pk=post_pk)
+
+class FollowNotification(View):
+    def get(self, request, notification_pk, username, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+        profile = Profile.objects.get(user__username = username)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        return redirect('profiles:profile', username=username)
+
+class RemoveNotification(View):
+    def delete(self, request, notification_pk, *args, **kwargs):
+        notification = Notification.objects.get(pk=notification_pk)
+
+        notification.user_has_seen = True
+        notification.save()
+
+        return HttpResponse('Success', content_type='text/plain')

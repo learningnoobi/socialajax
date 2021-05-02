@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from profiles.models import Profile
+from django.utils import timezone
 
 class Post(models.Model):
     title = models.CharField(max_length=200)
@@ -52,3 +53,13 @@ class Comment(models.Model):
     @property
     def is_child(self):
         return self.parentchild.all()
+
+class Notification(models.Model):
+	# 1 = Like, 2 = Comment, 3 = Follow
+	notification_type = models.IntegerField()
+	to_user = models.ForeignKey(User, related_name='notification_to', on_delete=models.CASCADE, null=True)
+	from_user = models.ForeignKey(User, related_name='notification_from', on_delete=models.CASCADE, null=True)
+	post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+	comment = models.ForeignKey('Comment', on_delete=models.CASCADE, related_name='+', blank=True, null=True)
+	date = models.DateTimeField(default=timezone.now)
+	user_has_seen = models.BooleanField(default=False)

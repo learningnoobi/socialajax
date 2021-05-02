@@ -1,0 +1,49 @@
+{% load static %}
+<div id="noticeboard" class="notice-list d-none">
+  {% for notification in notifications %} 
+  {% if notification.post %}
+  <!---->
+     {% if notification.notification_type == 1 %}
+
+          <a
+            class="li-bell"
+            href="{% url 'posts:post-notification' notification.pk notification.post.pk %}"
+            >@{{ notification.from_user }} liked your post</a>
+
+    {% elif notification.notification_type == 2 %}
+
+			<a
+				class="li-bell"
+				href="{% url 'posts:post-notification' notification.pk notification.post.pk %}"
+				>@{{ notification.from_user }} commented on your post</a>
+
+  {% endif %} 
+  
+  {% elif notification.comment %}
+  	 {% if notification.notification_type == 1 %}
+
+		<a
+			class="li-bell"
+			href="{% url 'posts:post-notification' notification.pk notification.comment.post.pk %}"
+			>@{{ notification.from_user }} liked your comment</a>
+
+  		{% elif notification.notification_type == 2 %}
+
+		<a
+			class="li-bell"
+			href="{% url 'posts:post-notification' notification.pk notification.comment.post.pk %}"
+			>@{{ notification.from_user }} replied to your comment</a>
+
+  		{% endif %}
+   {% else %}
+
+		<a
+		class="li-bell"
+		href="{% url 'posts:follow-notification' notification.pk notification.from_user.username %}"
+		>@{{ notification.from_user }} has started following you</a	>
+
+  {% endif %} 
+  {% empty %}
+	<p class="">No new notifications .</p>
+{% endfor %} 
+</div>

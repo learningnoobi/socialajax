@@ -29,13 +29,12 @@
             <button class="nav-link author bell" id="notifications">
               <i class="fa fa-bell"></i>
             </button>
-            <span class="notnum">3</span>
+            {% if not notifications.count  is 0 %}
+            <span class="notnum">{{ notifications.count }} </span>
+
+            {% endif %}
           </span>
-          <div id="noticeboard" class="notice-list d-none">
-            <a class="li-bell" href="#">Sasuke followed you .</a>
-            <a class="li-bell" href="#">Rayon liked your photo .</a>
-            <a class="li-bell" href="#">Naruto commented on your photo .</a>
-          </div>
+          {% include 'posts/nav_notice.html' %}
         </span>
         <a class="nav-link author" href="{% url 'profiles:logout' %}"
           >Log Out</a

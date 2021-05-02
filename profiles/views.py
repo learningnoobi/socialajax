@@ -11,6 +11,8 @@ from django.contrib.auth import login, authenticate,logout
 import json
 from django.conf import settings
 import urllib
+from posts.models import Notification
+
 @login_required(login_url='profiles:login')
 def profile(request,username):
     profile = get_object_or_404(Profile,user__username = username)
@@ -59,6 +61,7 @@ def follow_unfollow(request):
             return JsonResponse({'follow':False,'followers':obj.userfollow})
         else:
             myprofile.following.add(obj.user)
+            notification = Notification.objects.create(notification_type=3, from_user=request.user, to_user=obj.user)
             return JsonResponse({'follow':True,'followers':obj.userfollow})
     return redirect(request.META.get('HTTP_REFERER'))
 
