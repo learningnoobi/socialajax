@@ -324,11 +324,25 @@ class FollowNotification(View):
 
         return redirect('profiles:profile', username=username)
 
-class RemoveNotification(View):
-    def delete(self, request, notification_pk, *args, **kwargs):
-        notification = Notification.objects.get(pk=notification_pk)
+def RemoveNotification(request):
+    if request.user.is_authenticated:
+        notifications_one = Notification.objects.filter(to_user=request.user).exclude(user_has_seen=True).order_by('-date')
+        notifications_two = notifications_one.filter(to_user=request.user).exclude(from_user = request.user).order_by('-date')
+        
+        if request.method == 'POST':
+            pk = request.POST.get("pk")
+            notification = get_object_or_404(Notification,pk=pk)
+            notification.user_has_seen = True
+            if request.is_ajax:
+                notifications = notifications_two.count() -1
+                notification.delete()
+                return JsonResponse({'msg':'deleted notification','noti_count':notifications})
+            return JsonResponse({'msg':'No'})
 
-        notification.user_has_seen = True
-        notification.save()
-
-        return HttpResponse('Success', content_type='text/plain')
+            
+# def delete_post(request, pk):
+#     obj = Post.objects.get(pk=pk)
+#     if request.is_ajax():
+#         obj.delete()
+#         return JsonResponse({'msg':'some message'})
+#     return redirect('posts:main-board')

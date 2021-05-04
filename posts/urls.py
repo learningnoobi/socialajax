@@ -14,7 +14,7 @@ from .views import (
     CommentReplyView,
     PostNotification,
     FollowNotification,
-    RemoveNotification
+    RemoveNotification,
 )
 
 app_name = 'posts'
@@ -38,6 +38,6 @@ urlpatterns = [
     path('<pk>/pk/', post_detail_data_view, name='post-detail-data'),
     path('notification/<int:notification_pk>/post/<int:post_pk>/', PostNotification.as_view(), name='post-notification'),
     path('notification/<int:notification_pk>/profile/<str:username>/', FollowNotification.as_view(), name='follow-notification'),
-    path('notification/delete/<int:notification_pk>/', RemoveNotification.as_view(), name='notification-delete'),
+    path('notification/delete_notice/', RemoveNotification, name='notification-delete'),
 ]
 

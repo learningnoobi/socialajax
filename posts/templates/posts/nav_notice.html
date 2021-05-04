@@ -4,46 +4,54 @@
   {% if notification.post %}
   <!---->
      {% if notification.notification_type == 1 %}
-
+<span id="not-{{notification.id}}" class="d-flex justify-content-between">
+		
           <a
             class="li-bell"
             href="{% url 'posts:post-notification' notification.pk notification.post.pk %}"
             >@{{ notification.from_user }} liked your post</a>
-
+			<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span>
+</span>
     {% elif notification.notification_type == 2 %}
-
+<span  id="not-{{notification.id}}"  class="d-flex justify-content-between">
+{% comment %} <input type="hidden" id="not_id" value="{{noticeboard.pk}}"> {% endcomment %}
 			<a
 				class="li-bell"
 				href="{% url 'posts:post-notification' notification.pk notification.post.pk %}"
 				>@{{ notification.from_user }} commented on your post</a>
-
+				<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span>
+</span>
   {% endif %} 
   
   {% elif notification.comment %}
   	 {% if notification.notification_type == 1 %}
+<span id="not-{{notification.id}}" class="d-flex justify-content-between">
 
 		<a
 			class="li-bell"
 			href="{% url 'posts:post-notification' notification.pk notification.comment.post.pk %}"
 			>@{{ notification.from_user }} liked your comment</a>
-
+<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
   		{% elif notification.notification_type == 2 %}
+<span id="not-{{notification.id}}" class="d-flex justify-content-between">     
 
-		<a
-			class="li-bell"
+		<a class="li-bell"
 			href="{% url 'posts:post-notification' notification.pk notification.comment.post.pk %}"
 			>@{{ notification.from_user }} replied to your comment</a>
-
+<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
   		{% endif %}
    {% else %}
-
-		<a
-		class="li-bell"
+		<span id="not-{{notification.id}}" class="d-flex justify-content-between">
+		
+		<a class="li-bell"
 		href="{% url 'posts:follow-notification' notification.pk notification.from_user.username %}"
 		>@{{ notification.from_user }} has started following you</a	>
-
+		<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
   {% endif %} 
   {% empty %}
 	<p class="">No new notifications .</p>
 {% endfor %} 
 </div>
+<script>
+
+</script>

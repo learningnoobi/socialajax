@@ -15,13 +15,6 @@ setInterval(() => {
   alertBox.style.display = "none";
 }, 5000);
 
-//show notifications
-const notificaions = document.querySelector("#notifications");
-const noticeboard = document.querySelector("#noticeboard");
-notificaions.addEventListener('click',(e) => {
-  noticeboard.classList.toggle('show')
-  noticeboard.classList.toggle('d-none')
-})
 
 
 const first = document.querySelector("#id_password1");
@@ -36,6 +29,13 @@ const showpassword = (a) => {
     a.type = "password";
   }
 };
+//show notifications
+const notificaions = document.getElementById("notifications");
+const noticeboard = document.getElementById("noticeboard");
+notificaions.addEventListener('click', (e) => {
+  noticeboard.classList.toggle('show')
+  noticeboard.classList.toggle('d-none')
+})
 
 const getCookie = (name) => {
   let cookieValue = null;
@@ -79,7 +79,7 @@ const likeUnlikePosts = () => {
           clickedBtn.innerHTML = response.liked
             ? `${response.count}<i class="fa fa-heart mx-2"></i>`
             : `${response.count} Like`;
-            
+
         },
         error: function (err) {
           console.log(err);
@@ -107,13 +107,12 @@ const saveUnsaveForms = () => {
         },
         success: function (res) {
           console.log(res);
-          clickedBtn.innerHTML = `${
-            res.important
-              ? ` <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
+          clickedBtn.innerHTML = `${res.important
+            ? ` <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
               </svg> Saved`
-              : "Save Post"
-          }`;
+            : "Save Post"
+            }`;
 
           if (res.important) {
             handlealerts("added", "Successfully Added to Save !");
@@ -151,9 +150,8 @@ const togglefollow = () => {
         },
         success: function (res) {
           console.log(res);
-          clickedtoggle.textContent = `${
-            res.follow ? ` Unfollow ` : ` Follow `
-          }`;
+          clickedtoggle.textContent = `${res.follow ? ` Unfollow ` : ` Follow `
+            }`;
           if (res.follow) {
             handlealerts("added", "Successfully Followed!");
           } else {
@@ -179,7 +177,7 @@ const commentlike = () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const clickedId = e.target.getAttribute("data-comment-id");
- 
+
       const clickedBtn = document.getElementById(`like-comment-${clickedId}`);
 
       $.ajax({
@@ -198,13 +196,14 @@ const commentlike = () => {
         },
         error: function (err) {
           console.log(err);
-          handlealerts("failed","something's wrong !")
+          handlealerts("failed", "something's wrong !")
         },
       });
     })
-  )};
+  )
+};
 
-  const commentDelete = () => {
+const commentDelete = () => {
   const deleteCommentForms = [
     ...document.getElementsByClassName("delete-comment-forms"),
   ];
@@ -213,9 +212,9 @@ const commentlike = () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
       const clickedId = e.target.getAttribute("data-comment-id");
-  
+
       const clickedBtn = document.getElementById(`delete-comment-${clickedId}`);
-    
+
       const comment = document.getElementById(`com-${clickedId}`)
       const replydiv = document.getElementById(`com-${clickedId}`)
       const replydivs = document.getElementById('reply-divs')
@@ -229,72 +228,73 @@ const commentlike = () => {
         },
         success: function (response) {
           console.log(response)
-          if(response.msg=="No"){
-            handlealerts("failed","You can't delete this !")
+          if (response.msg == "No") {
+            handlealerts("failed", "You can't delete this !")
           }
-          else{
-            handlealerts("added",response.msg)
+          else {
+            handlealerts("added", response.msg)
             comment.style.display = "none"
             replydiv.style.display = "none"
-           
+
           }
-        
+
         },
         error: function (err) {
           console.log(err);
-          handlealerts("failed","something's wrong !")
+          handlealerts("failed", "something's wrong !")
         },
       });
     })
-  )};
+  )
+};
 
 
 
 
 
-  const commentreply = () => {
-    const showreplyforms = [
-      ...document.getElementsByClassName("reply-comment-forms"),
-    ];
-    console.log(showreplyforms)
-    showreplyforms.forEach((el) =>
-      el.addEventListener('submit', function(e){
-        e.preventDefault();
-        const clickedId = e.target.getAttribute("data-reply-id");
-        const difbtn = document.getElementById(`show-reply-${clickedId}`);
-        const replybox = document.getElementById(`replybox-${clickedId}`);
-        const replyinput = document.getElementById(`replyinput-${clickedId}`);
-        const replybutton = document.getElementById(`replybutton-${clickedId}`);
-        const post_pk = document.getElementById('post_id').value
-        const replydiv = document.getElementById('reply-divs')
-        const replydivs = document.getElementById(`com-${clickedId}`)
+const commentreply = () => {
+  const showreplyforms = [
+    ...document.getElementsByClassName("reply-comment-forms"),
+  ];
+  console.log(showreplyforms)
+  showreplyforms.forEach((el) =>
+    el.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const clickedId = e.target.getAttribute("data-reply-id");
+      const difbtn = document.getElementById(`show-reply-${clickedId}`);
+      const replybox = document.getElementById(`replybox-${clickedId}`);
+      const replyinput = document.getElementById(`replyinput-${clickedId}`);
+      const replybutton = document.getElementById(`replybutton-${clickedId}`);
+      const post_pk = document.getElementById('post_id').value
+      const replydiv = document.getElementById('reply-divs')
+      const replydivs = document.getElementById(`com-${clickedId}`)
 
-        // console.log(post_pk)
-        // console.log(clickedId)
-        // console.log(replybox)
-       
-        replybox.classList.toggle("d-block")
-        replybox.classList.toggle("d-none")
-        // console.log(replyinput)
-        replybutton.addEventListener('click',()=>{
-          console.log(replyinput.value)
-          const body = replyinput.value.trim()
-          if(body.length <1){
-            alert('cannot be blank')
-          }
-          else{
-            $.ajax({
-              type: "POST",
-              url: "/reply/comment/",
-              data: {
-                csrfmiddlewaretoken: csrftoken,
-                post_pk:post_pk,
-                pk: clickedId,
-                body:body
-              },
-              success: function (c) {
-                console.log(c)
-                replydivs.insertAdjacentHTML("afterend",`
+      // console.log(post_pk)
+      // console.log(clickedId)
+      // console.log(replybox)
+
+      replybox.classList.toggle("d-block")
+      replybox.classList.toggle("d-none")
+      // console.log(replyinput)
+      replybutton.addEventListener('click', () => {
+        console.log(replyinput.value)
+        const body = replyinput.value.trim()
+        if (body.length < 1) {
+          alert('cannot be blank')
+        }
+        else {
+          $.ajax({
+            type: "POST",
+            url: "/reply/comment/",
+            data: {
+              csrfmiddlewaretoken: csrftoken,
+              post_pk: post_pk,
+              pk: clickedId,
+              body: body
+            },
+            success: function (c) {
+              console.log(c)
+              replydivs.insertAdjacentHTML("afterend", `
    
                 <div class="reply-div" id="com-${c.id}" >
               
@@ -311,21 +311,51 @@ const commentlike = () => {
                </div>
                <div>
                </div>`)
-               replyinput.value = ""
-              },
-              error: function (err) {
-                console.log(err);
-                handlealerts("failed","something's wrong !")
-              },
+              replyinput.value = ""
+            },
+            error: function (err) {
+              console.log(err);
+              handlealerts("failed", "something's wrong !")
+            },
           });
-          }
+        }
 
-        })
-        
-          
-  
-       
       })
-    )};
-  
-  
+
+
+
+
+    })
+  )
+};
+
+function delete_notice(id) {
+  const not_link = document.getElementById(`not-${id}`)
+  const noticeboard = document.getElementById(`noticeboard`)
+  const notifi_num = document.getElementById(`notifi_num`)
+  console.log(not_link)
+  console.log(id)
+  $.ajax({
+    type: "POST",
+    url: '/notification/delete_notice/',
+    data: {
+      csrfmiddlewaretoken: csrftoken,
+      pk: id,
+
+    },
+    success: function (response) {
+      console.log(response)
+      notifi_num.textContent = response.noti_count
+      if (response.noti_count === 0) {
+        notifi_num.remove()
+        noticeboard.innerHTML = "No New Notifications"
+      }
+      handlealerts("added", response.msg)
+      not_link.remove()
+    },
+    error: function (err) {
+      console.log(err);
+      handlealerts("failed", "something's wrong !")
+    },
+  });
+}
