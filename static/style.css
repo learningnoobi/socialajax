@@ -360,10 +360,15 @@ a {
   right: 5px;
 }
 .bell {
-  background-color: rgb(159, 125, 168);
+  background-color: rgb(213, 99, 236);
   color: white;
-  border-radius: 47%;
+  display: flex;
   border: none;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius:50%;
 }
 .notice-list {
   position: absolute;
@@ -372,7 +377,7 @@ a {
   display: flex;
   color: white;
   margin-top: 10px;
-  right: 20%;
+  right: 18%;
   flex-direction: column;
   padding: 20px;
   border-radius: 10px;
@@ -403,8 +408,38 @@ a {
   font-size: 10px;
   font-weight: 700;
   top: -5px;
-  left: 35px;
+  left: 77px;
   color: white;
   padding: 4px 8px;
   border-radius: 45%;
+}
+.sent-message {
+	background-color: #644de6;
+	border-radius: 30px;
+  color: white;
+	padding: 10px 15px;
+	width: 25%;
+  float: right;
+}
+
+.received-message {
+	background-color: rgb(223, 57, 107);
+	color: #fff;
+	border-radius: 30px;
+	padding: 10px 15px;
+	width: 25%;
+	float: left;
+}
+.messageme{
+  background-color: rgb(97, 23, 182);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius:50%;
+}
+.messageme:hover{
+  color: wheat;
 }

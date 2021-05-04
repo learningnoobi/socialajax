@@ -1,0 +1,58 @@
+{% extends 'base.html' %} {% load static %} {% load crispy_forms_tags %}
+<!---->
+{% block title %} Join Us - Register {% endblock title %}
+ {% block scripts %}
+   <script src="{% static 'profiles/main.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'profiles/profiles.css' %}" />
+{% endblock css %}
+
+ {% block content %}    
+   <div class="row m-auto">
+
+   <div id="alertBox" >
+    </div>
+ {% for people in people_to_follow %}
+    <div class="col-lg-6 m-auto mt-2">
+        <div class="card p-3 cardme">
+        <div class="d-flex align-items-center">
+            <a href="/{{people.user.username}}"><div class="image">
+             <img src="{{people.avatar.url}}" class="rounded" width="155" /> </div></a>
+            <div class="ml-3 mx-2 w-100">
+                <a href="/{{people.user.username}}" class="author"> <h4 class="mb-0 mt-0">{{people.user.username}}</h4></a>
+                 <span class="small">{{people.bio}}</span>
+                <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
+                    <div class="d-flex flex-column"> <span class="articles">Posts</span> <span class="number1">{{people.totalpost}}</span> </div>
+                    <div data-bs-toggle="modal" data-bs-target="#followersModal"class="d-flex flex-column openmodal">
+                      
+                     <span 
+                    class="followers mx-1">Followers</span> <span id="followers" class="number2">{{people.userfollow}}</span> 
+                     </div>
+                    <div data-bs-toggle="modal" data-bs-target="#followingModal" class="d-flex flex-column openmodal"> 
+                    <span class="rating"  >Following</span> <span class="number3">{{people.ifollow}}</span> </div>
+                   
+                </div>
+
+                <div class="button mt-2 d-flex flex-row align-items-center">
+                {% comment %} check if the current user is the owner of the profile {% endcomment %}
+                  
+                  <button class="btn btn-sm cmnt-postsm mx-2 w-100">Chat</button> 
+                 <form class="follow-unfollow-forms"  data-follow-id="{{people.user.username}}">
+                 
+                    
+                      <button type="submit" class="loadmoresm btn-{{people.user.username}}">Follow</button>
+                </form>
+                  </div>
+            </div>
+        </div>
+</div>
+    
+    
+   </div>
+
+       {% endfor %} 
+
+</div>
+ {% endblock content %}

@@ -20,7 +20,7 @@
              
              <img src="{{profile.avatar.url}}" class="rounded" width="155" /> </div>
             <div class="ml-3 mx-2 w-100">
-                <h4 class="mb-0 mt-0">{{profile.user.username|title}}</h4>
+                <h4 class="mb-0 mt-0 author">{{profile.user.username|title}}</h4>
                  <span class="small">{{profile.bio}}</span>
                 <div class="p-2 mt-2 mx-1 bg-primary d-flex justify-content-between rounded text-white stats">
                     <div class="d-flex flex-column"> <span class="articles">Posts</span> <span class="number1">{{profile.totalpost}}</span> </div>
@@ -37,7 +37,7 @@
                 <div class="button mt-2 d-flex flex-row align-items-center">
                 {% comment %} check if the current user is the owner of the profile {% endcomment %}
                 {% if request.user == profile.user %}
-                    <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm savepostsm mx-1 w-100">Edit Me</button> 
+                    <button  data-bs-toggle="modal" data-bs-target="#profileModal" class="btn btn-sm savepostsm mx-1 w-90">Edit Me</button> 
                  {% else %}
                   <button class="btn btn-sm cmnt-postsm mx-2 w-100">Chat</button> 
                  {% endif %}
@@ -45,7 +45,7 @@
 
                 {% comment %} follow system {% endcomment %}
                 {% if request.user == profile.user %}
-                        <button type="submit" class="btn btn-sm loadmoresm w-100 ml-2">Followers</button>
+                        <a href="{% url 'profiles:findpeople' %}"><button type="submit" class="btn btn-sm loadmoresm w-100 mx-2">Find People</button></a>
                 {% else %}
 
                  {% if follow %}

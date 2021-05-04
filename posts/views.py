@@ -320,7 +320,7 @@ class FollowNotification(View):
         profile = Profile.objects.get(user__username = username)
 
         notification.user_has_seen = True
-        notification.save()
+        notification.delete()
 
         return redirect('profiles:profile', username=username)
 
@@ -340,9 +340,3 @@ def RemoveNotification(request):
             return JsonResponse({'msg':'No'})
 
             
-# def delete_post(request, pk):
-#     obj = Post.objects.get(pk=pk)
-#     if request.is_ajax():
-#         obj.delete()
-#         return JsonResponse({'msg':'some message'})
-#     return redirect('posts:main-board')

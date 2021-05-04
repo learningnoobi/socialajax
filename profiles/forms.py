@@ -37,3 +37,14 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ("first_name","last_name", "bio" , "avatar")
     
+class ThreadForm(forms.Form):
+    username = forms.CharField(label='', max_length=100,  widget=forms.TextInput(
+                        attrs={'placeholder': "Enter Username ...", 
+                            "class": "comment-box"}
+                    ))
+
+class MessageForm(forms.Form):
+    message = forms.CharField(label='', max_length=100,  widget=forms.TextInput(
+                        attrs={'placeholder': "your message ...", 
+                            "class": "comment-box"}
+                    ))

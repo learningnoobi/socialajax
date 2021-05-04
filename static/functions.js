@@ -348,7 +348,7 @@ function delete_notice(id) {
       notifi_num.textContent = response.noti_count
       if (response.noti_count === 0) {
         notifi_num.remove()
-        noticeboard.innerHTML = "No New Notifications"
+        noticeboard.innerHTML = "No new Notifications ."
       }
       handlealerts("added", response.msg)
       not_link.remove()

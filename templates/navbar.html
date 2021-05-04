@@ -25,8 +25,11 @@
       <div class="d-flex align-items-center">
         {% if request.user.is_authenticated %}
         <span style="postition: relative">
-          <span class="btnhold">
-            <button class="nav-link author bell" id="notifications">
+          <span class="btnhold d-flex">
+          <a href="{% url 'profiles:inbox' %}" class="nav-link messageme btn-sm" id="message">
+              <i class="fa fa-paper-plane"></i>
+            </a>
+            <button class="nav-link bell mx-2 " id="notifications">
               <i class="fa fa-bell"></i>
             </button>
             {% if not notifications.count  is 0 %}
