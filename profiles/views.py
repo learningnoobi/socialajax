@@ -137,12 +137,27 @@ def loginview(request):
 def logoutUser(request):
 	logout(request)
 	return redirect('profiles:login')
+    
 @login_required(login_url='profiles:login')
 def findpeople(request):
+
+    return render(request,'profiles/findpeople.html' )
+
+def list_people(request):
     people_one = Profile.objects.exclude(user=request.user)
     people = people_one.exclude(user__followed = request.user.profile).order_by("?")
-    context = {'people_to_follow':people}
-    return render(request,'profiles/findpeople.html' ,context)
+    data = []
+    for obj in people:
+        find_to_follow = {
+            "name":obj.user.username,
+            "avatar":obj.avatar.url,
+            "bio":obj.bio,
+            "totalpost":obj.totalpost,
+            "followers":obj.userfollow,
+            "following":obj.ifollow
+        }
+        data.append(find_to_follow)
+    return JsonResponse({'data':data})
 
 class ListThreads(View):
     def get(self, request, *args, **kwargs):

@@ -28,7 +28,7 @@ urlpatterns = [
     path('reply/comment/', CommentReplyView, name='replycomment'),
 
     #list of the saved posts
-    path('savelist/', save_list, name='savelist'),
+    path('imp/savelist/', save_list, name='savelist'),
      path('search/', search, name='search'),
      path('comment/delete_comment/', delete_comment, name='delete-comment'),
   

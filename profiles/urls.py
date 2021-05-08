@@ -9,6 +9,7 @@ urlpatterns = [
     path('<str:username>/', profile ,name="profile"),
     path('user/follow_unfollow/', follow_unfollow ,name="follow_unfollow"),
     path('auth/login', loginview , name="login"),
+    path('list/people', list_people , name="list_people"),
     path('auth/register', registerview , name="register"),
     path('auth/logout/',logoutUser,name = 'logout'),
     path('auth/find-people/',findpeople,name = 'findpeople'),

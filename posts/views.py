@@ -53,6 +53,7 @@ def list_json(request,num_posts):
         "bio":obj.author.bio,
         "followers":obj.author.userfollow,
         "following":obj.author.ifollow,
+        "created":obj.created,
         "follow":True if request.user.profile in obj.author.followers else False,
         "same_user_author":True if obj.author == request.user.profile else False
         }
@@ -282,7 +283,8 @@ def search(request):
         res = None
         qs = Post.objects.filter(
             Q(title__icontains =search) |
-            Q(body__icontains =search) 
+            Q(body__icontains =search) |
+            Q(author__user__username__icontains=search)
 
             )
         if len(qs) > 0 and len(search) > 0:

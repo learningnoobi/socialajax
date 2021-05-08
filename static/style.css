@@ -359,6 +359,10 @@ a {
   top: -10px;
   right: 5px;
 }
+.date{
+  font-size: 13px;
+  color: #a1aab9;
+}
 .bell {
   background-color: rgb(213, 99, 236);
   color: white;

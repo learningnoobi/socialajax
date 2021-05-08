@@ -20,32 +20,28 @@ const getData = () => {
         hello.innerHTML += `
      
      
-       <input type="hidden" id="profile_pk" name="profile_pk" value="${
-         el.author
-       }" />
+       <input type="hidden" id="profile_pk" name="profile_pk" value="${el.author
+          }" />
             <div class="card mt-2">
                <div class="card-body d-flex ">
                  <span>
                  <span class="hoverme">
-                        <img src="${
-                          el.avatar
-                        }" class="rounded-circle infoimg" /> 
+                        <img src="${el.avatar
+          }" class="rounded-circle infoimg" /> 
 
 
                             <div class="content">
                                 <div class="d-flex">
-                                <img src="${
-                                  el.avatar
-                                }" class="rounded infoimg"/> 
+                                <img src="${el.avatar
+          }" class="rounded infoimg"/> 
                                     <span class="mx-2">
                                     <span class="author">${el.author}</span>
                                    
                                     <p class="bio">${el.bio}</p> 
                                    <div class="d-flex">
                                         <span class="followers">Followers
-                                        <p id="followers-${
-                                          el.author
-                                        }"  class="ml-2">${el.followers}</p>
+                                        <p id="followers-${el.author
+          }"  class="ml-2">${el.followers}</p>
                                         </span>
                                         <span class="followers mx-2">Following
                                         <p class="ml-2">${el.following}</p>
@@ -54,22 +50,19 @@ const getData = () => {
                                 </div>
                                 <span class="d-flex mt-2">
 
-                                <form class="follow-unfollow-forms" data-follow-id="${
-                                  el.author
-                                }">
-                                ${
-                                  el.same_user_author
-                                    ? `<button type="submit" class="loadmoresm">You Man</button>`
-                                    : `${
-                                        el.follow
-                                          ? `
+                                <form class="follow-unfollow-forms" data-follow-id="${el.author
+          }">
+                                ${el.same_user_author
+            ? `<button type="submit" class="loadmoresm">You Man</button>`
+            : `${el.follow
+              ? `
                                          
                                           <button id="toggle_btn-${el.author}"   type="submit" class="loadmoresm btn-${el.author}">Unfollow</button>`
-                                          : `
+              : `
                                          
                                           <button id="toggle_btn-${el.author}"  type="submit" class="loadmoresm btn-${el.author}">Follow</button>`
-                                      }`
-                                }
+            }`
+          }
                                 </form>
 
 
@@ -85,9 +78,10 @@ const getData = () => {
                     </span>
                   </span>
                 <div class="mx-3">
-                 <a class="author" href="${url}${el.author}">${
-          el.author
-        }</a> </br>
+                 <a class="author" href="${url}${el.author}">${el.author
+          }</a>  <br>
+         
+
                     ${el.title} 
                     <p> ${el.body}</p>
                 </div>
@@ -97,26 +91,23 @@ const getData = () => {
                     <a href="${url}${el.id}" class="cmnt-post">Detail</a>
                     
                     <form class="like-unlike-forms" data-form-id="${el.id}">
-                           <button  id="like-unlike-${
-                             el.id
-                           }" class="loadmore mx-2">
-                            ${
-                              el.liked
-                                ? `${el.count} <i class="fa fa-heart mx-2"></i>`
-                                : ` ${el.count} Like`
-                            }</button>
+                           <button  id="like-unlike-${el.id
+          }" class="loadmore mx-2">
+                            ${el.liked
+            ? `${el.count} <i class="fa fa-heart mx-2"></i>`
+            : ` ${el.count} Like`
+          }</button>
 
                             
                       </form>
 
                      <form class="save-forms" data-save-id="${el.id}">
-                          <button id="save-${el.id}"  class="savepost mx-2">${
-          el.important
+                          <button id="save-${el.id}"  class="savepost mx-2">${el.important
             ? ` <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bookmark-check-fill" viewBox="0 0 16 16">
                           <path fill-rule="evenodd" d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
                         </svg> Saved `
             : `Save Post`
-        }</button> 
+          }</button> 
                     </form>
                 </div>
             </div>
@@ -319,6 +310,6 @@ const objRef = document.body;
 objRef.addEventListener("click", () => {
   resultdiv.classList.add("not-visible");
   searchinput.value = "";
-  
+
 });
 // disapper search result when clicked outside
