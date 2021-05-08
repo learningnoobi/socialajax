@@ -40,6 +40,16 @@
 			>@{{ notification.from_user }} replied to your comment</a>
 <span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
   		{% endif %}
+
+		{% comment %} {% elif notification.notification_type == 4 %}
+		<span id="not-{{notification.id}}" class="d-flex justify-content-between">
+		
+		<a class="li-bell"
+		href="{% url 'posts:follow-notification' notification.pk notification.from_user.username %}"
+		>@{{ notification.from_user }} has messaged you .</a	>
+		<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
+	{% endif %} {% endcomment %}
+
    {% else %}
 		<span id="not-{{notification.id}}" class="d-flex justify-content-between">
 		
@@ -47,6 +57,7 @@
 		href="{% url 'posts:follow-notification' notification.pk notification.from_user.username %}"
 		>@{{ notification.from_user }} has started following you</a	>
 		<span style="cursor:pointer;" onclick="delete_notice({{notification.pk}})" class="text-white"><strong>&times</strong></span></span>
+		
   {% endif %} 
   {% empty %}
 	<p class="">No new notifications .</p>

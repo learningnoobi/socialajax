@@ -218,4 +218,5 @@ class CreateMessage(View):
         )
 
         message.save()
+        # notification = Notification.objects.create(notification_type=4, from_user=request.user, to_user=receiver)
         return redirect('profiles:thread', pk=pk)
